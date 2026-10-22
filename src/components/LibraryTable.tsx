@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 export type LibraryRow = {
@@ -8,6 +9,7 @@ export type LibraryRow = {
   hours: number;
   hours2w: number;
   lastPlayed: number | null; // unix seconds
+  href?: string; // deep-dive page, when one exists
 };
 
 type SortKey = "hours" | "name" | "lastPlayed";
@@ -71,7 +73,15 @@ export default function LibraryTable({ rows }: { rows: LibraryRow[] }) {
           <tbody>
             {shown.map((r) => (
               <tr key={r.appid} className="border-t border-border">
-                <td className="px-3 py-2">{r.name}</td>
+                <td className="px-3 py-2">
+                  {r.href ? (
+                    <Link href={r.href} className="text-accent hover:underline">
+                      {r.name}
+                    </Link>
+                  ) : (
+                    r.name
+                  )}
+                </td>
                 <td className="px-3 py-2 text-right tabular-nums">{r.hours.toLocaleString()}</td>
                 <td className="px-3 py-2 text-right tabular-nums text-muted">{r.hours2w ? r.hours2w : "–"}</td>
                 <td className="px-3 py-2 text-right text-muted">{formatDate(r.lastPlayed)}</td>

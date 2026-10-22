@@ -1,4 +1,6 @@
+import Link from "next/link";
 import LibraryTable, { type LibraryRow } from "@/components/LibraryTable";
+import { DEEP_DIVES } from "@/lib/deep-dives";
 import { getSession } from "@/lib/session";
 import { getOwnedGames, getProfile, getRecentGames, headerImage, hours, isDemo } from "@/lib/steam";
 
@@ -21,6 +23,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ e
     hours: hours(g.playtime_forever),
     hours2w: hours(g.playtime_2weeks ?? 0),
     lastPlayed: g.rtime_last_played || null,
+    href: DEEP_DIVES[g.appid],
   }));
   const totalHours = rows.reduce((sum, r) => sum + r.hours, 0);
   const recentHours = recent.reduce((sum, g) => sum + hours(g.playtime_2weeks), 0);
@@ -71,7 +74,15 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ e
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={headerImage(g.appid)} alt="" className="aspect-[460/215] w-full object-cover" />
                 <div className="p-3">
-                  <div className="font-medium">{g.name}</div>
+                  <div className="font-medium">
+                    {DEEP_DIVES[g.appid] ? (
+                      <Link href={DEEP_DIVES[g.appid]} className="hover:text-accent">
+                        {g.name} →
+                      </Link>
+                    ) : (
+                      g.name
+                    )}
+                  </div>
                   <div className="text-sm text-muted">
                     {hours(g.playtime_2weeks)} h last 2 weeks · {hours(g.playtime_forever).toLocaleString()} h total
                   </div>
