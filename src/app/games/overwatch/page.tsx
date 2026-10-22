@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CoachPanel from "@/components/CoachPanel";
+import { buildTips, coachingPrompt } from "@/lib/coach";
 import {
   formatRank,
   getCompetitiveStats,
@@ -81,7 +82,7 @@ export default async function OverwatchPage() {
       </section>
 
       <section className="mb-6">
-        <CoachPanel endpoint="/api/coach/overwatch" />
+        <CoachPanel tips={buildTips(summary, stats, rows)} prompt={coachingPrompt(summary, stats, rows)} />
       </section>
 
       <section>
