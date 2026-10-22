@@ -52,17 +52,17 @@ export default function LibraryTable({ rows }: { rows: LibraryRow[] }) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search your library"
-          className="w-full max-w-xs rounded-md border border-border bg-background px-3 py-1.5 text-sm outline-none focus:border-accent"
+          className="w-full max-w-xs rounded-xl border border-border bg-surface px-3 py-2 text-sm outline-none focus:border-accent"
         />
         <label className="flex items-center gap-2 text-sm text-muted">
-          <input type="checkbox" checked={hideUnplayed} onChange={(e) => setHideUnplayed(e.target.checked)} />
+          <input type="checkbox" className="accent-[var(--accent)]" checked={hideUnplayed} onChange={(e) => setHideUnplayed(e.target.checked)} />
           Hide unplayed
         </label>
         <span className="ml-auto text-sm text-muted">{shown.length} games</span>
       </div>
-      <div className="overflow-x-auto rounded-lg border border-border">
+      <div className="card overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-background/50">
+          <thead className="bg-surface-2/60">
             <tr>
               {header("name", "Game")}
               {header("hours", "Hours", "text-right")}
@@ -72,10 +72,10 @@ export default function LibraryTable({ rows }: { rows: LibraryRow[] }) {
           </thead>
           <tbody>
             {shown.map((r) => (
-              <tr key={r.appid} className="border-t border-border">
+              <tr key={r.appid} className="border-t border-border hover:bg-surface-2/40">
                 <td className="px-3 py-2">
                   {r.href ? (
-                    <Link href={r.href} className="text-accent hover:underline">
+                    <Link href={r.href} className="font-medium text-accent hover:underline">
                       {r.name}
                     </Link>
                   ) : (
