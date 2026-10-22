@@ -54,16 +54,38 @@ async function call<T>(path: string): Promise<T | null> {
   return res.json() as Promise<T>;
 }
 
-export async function getSummary(battletag: string) {
-  if (isDemo()) return demoOwSummary;
-  return call<OwSummary>(`/players/${encodeURIComponent(playerId(battletag))}/summary`);
+type SearchResult = { player_id: string; name: string; is_public?: boolean };
+
+/**
+ * Finds the OverFast player id for a BattleTag. Most profiles live at
+ * "Name-1234", but some (often Steam-linked accounts) use a different id,
+ * so fall back to a name search.
+ */
+export async function resolvePlayerId(battletag: string): Promise<string | null> {
+  if (isDemo()) return "demo";
+  // A career id copied from the Blizzard profile URL (no "#") is used as is.
+  if (!battletag.includes("#")) return decodeURIComponent(battletag.trim());
+  const direct = playerId(battletag);
+  if (await call<OwSummary>(`/players/${encodeURIComponent(direct)}/summary`)) return direct;
+
+  const [name] = battletag.replace(/\s+/g, "").split("#");
+  const search = await call<{ results: SearchResult[] }>(`/players?name=${encodeURIComponent(name)}`);
+  const results = search?.results ?? [];
+  const wanted = battletag.replace(/\s+/g, "").toLowerCase();
+  const match =
+    results.find((r) => r.name.toLowerCase() === wanted) ??
+    (results.length === 1 ? results[0] : undefined);
+  return match?.player_id ?? null;
 }
 
-export async function getCompetitiveStats(battletag: string) {
+export async function getSummary(id: string) {
+  if (isDemo()) return demoOwSummary;
+  return call<OwSummary>(`/players/${encodeURIComponent(id)}/summary`);
+}
+
+export async function getCompetitiveStats(id: string) {
   if (isDemo()) return demoOwStats;
-  return call<OwStats>(
-    `/players/${encodeURIComponent(playerId(battletag))}/stats/summary?gamemode=competitive&platform=pc`,
-  );
+  return call<OwStats>(`/players/${encodeURIComponent(id)}/stats/summary?gamemode=competitive&platform=pc`);
 }
 
 export async function getHeroes(): Promise<HeroInfo[]> {

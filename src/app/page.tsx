@@ -3,7 +3,7 @@ import GameArt from "@/components/GameArt";
 import LibraryTable, { type LibraryRow } from "@/components/LibraryTable";
 import { DEEP_DIVES } from "@/lib/deep-dives";
 import { getSession } from "@/lib/session";
-import { getOwnedGames, getProfile, getRecentGames, headerImage, hours, isDemo } from "@/lib/steam";
+import { getHeaderImage, getOwnedGames, getProfile, getRecentGames, hours, isDemo } from "@/lib/steam";
 
 export const dynamic = "force-dynamic";
 
@@ -17,6 +17,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ e
     getOwnedGames(steamid),
     getRecentGames(steamid),
   ]);
+  const art = await Promise.all(recent.map((g) => getHeaderImage(g.appid)));
 
   const rows: LibraryRow[] = owned.map((g) => ({
     appid: g.appid,
@@ -70,25 +71,33 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ e
         <section className="mb-8">
           <h2 className="mb-3 text-lg font-semibold">Recently played</h2>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {recent.map((g) => (
-              <div key={g.appid} className="overflow-hidden rounded-lg border border-border bg-surface">
-                <GameArt src={headerImage(g.appid)} name={g.name} />
-                <div className="p-3">
-                  <div className="font-medium">
-                    {DEEP_DIVES[g.appid] ? (
-                      <Link href={DEEP_DIVES[g.appid]} className="hover:text-accent">
-                        {g.name} →
-                      </Link>
-                    ) : (
-                      g.name
-                    )}
+            {recent.map((g, i) => {
+              const href = DEEP_DIVES[g.appid];
+              const card = (
+                <>
+                  <GameArt src={art[i]} name={g.name} />
+                  <div className="p-3">
+                    <div className="font-medium">
+                      {g.name}
+                      {href && " →"}
+                    </div>
+                    <div className="text-sm text-muted">
+                      {hours(g.playtime_2weeks)} h last 2 weeks · {hours(g.playtime_forever).toLocaleString()} h total
+                    </div>
                   </div>
-                  <div className="text-sm text-muted">
-                    {hours(g.playtime_2weeks)} h last 2 weeks · {hours(g.playtime_forever).toLocaleString()} h total
-                  </div>
+                </>
+              );
+              const box = "block overflow-hidden rounded-lg border border-border bg-surface";
+              return href ? (
+                <Link key={g.appid} href={href} className={`${box} transition-colors hover:border-accent`}>
+                  {card}
+                </Link>
+              ) : (
+                <div key={g.appid} className={box}>
+                  {card}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
       )}
