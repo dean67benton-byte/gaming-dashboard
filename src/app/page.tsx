@@ -250,9 +250,8 @@ function Mini({ label, value }: { label: string; value: string }) {
 function SignIn({ failed }: { failed: boolean }) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-5 px-4 text-center">
-      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-accent to-accent-2 text-2xl font-black text-background">
-        G
-      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/logo.png" alt="" className="h-16 w-16" />
       <h1 className="text-3xl font-bold">Gaming Dashboard</h1>
       <p className="max-w-md text-muted">Sign in with Steam to see your library, hours, stats and coaching.</p>
       {failed && <p className="text-sm text-bad">Steam sign in failed. Try again.</p>}

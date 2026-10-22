@@ -46,8 +46,9 @@ export default async function Shell({ active, children }: { active: string; chil
   return (
     <div className="mx-auto flex min-h-screen max-w-[1400px] gap-4 p-3 md:p-5">
       <aside className="card sticky top-5 hidden h-[calc(100vh-2.5rem)] w-[72px] shrink-0 flex-col items-center gap-2 py-5 md:flex">
-        <Link href="/" className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-2 text-lg font-black text-background">
-          G
+        <Link href="/" title="Home" className="mb-4 flex h-10 w-10 items-center justify-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="" className="h-9 w-9" />
         </Link>
         {NAV.map((item) => (
           <NavLink key={item.label} item={item} active={active === item.label} />
