@@ -63,6 +63,8 @@ type SearchResult = { player_id: string; name: string; is_public?: boolean };
  */
 export async function resolvePlayerId(battletag: string): Promise<string | null> {
   if (isDemo()) return "demo";
+  // A career id copied from the Blizzard profile URL (no "#") is used as is.
+  if (!battletag.includes("#")) return decodeURIComponent(battletag.trim());
   const direct = playerId(battletag);
   if (await call<OwSummary>(`/players/${encodeURIComponent(direct)}/summary`)) return direct;
 
