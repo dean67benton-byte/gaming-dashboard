@@ -19,8 +19,6 @@ Open http://localhost:3000 and sign in through Steam.
 | `APP_URL` | Optional. Where the app runs; defaults to the request's own URL |
 | `DEMO_MODE` | `1` shows sample data without signing in |
 | `OVERWATCH_BATTLETAG` | Your BattleTag, e.g. `Name#1234`. Career profile must be public in game |
-| `ANTHROPIC_API_KEY` | Turns on AI coaching. From https://console.anthropic.com |
-| `ALLOWED_STEAMIDS` | Optional. Comma-separated SteamID64s allowed to use AI coaching (it costs API credits) |
 
 Without `STEAM_API_KEY` the app runs in demo mode automatically.
 
