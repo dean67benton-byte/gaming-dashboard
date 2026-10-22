@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
+import { appUrl } from "@/lib/app-url";
 import { clearSession } from "@/lib/session";
 
-export async function POST() {
+export async function POST(req: NextRequest) {
   await clearSession();
-  return NextResponse.redirect(process.env.APP_URL ?? "http://localhost:3000", 303);
+  return NextResponse.redirect(appUrl(req), 303);
 }

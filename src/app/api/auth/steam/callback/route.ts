@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { appUrl as getAppUrl } from "@/lib/app-url";
 import { setSession } from "@/lib/session";
 
 const CLAIMED_ID = /^https:\/\/steamcommunity\.com\/openid\/id\/(\d{17})$/;
@@ -6,7 +7,7 @@ const CLAIMED_ID = /^https:\/\/steamcommunity\.com\/openid\/id\/(\d{17})$/;
 // Steam redirects here after sign in. We ask Steam to confirm the response
 // is genuine before trusting the SteamID in it.
 export async function GET(req: NextRequest) {
-  const appUrl = process.env.APP_URL ?? "http://localhost:3000";
+  const appUrl = getAppUrl(req);
   const params = new URLSearchParams(req.nextUrl.searchParams);
   const steamid = params.get("openid.claimed_id")?.match(CLAIMED_ID)?.[1];
   const returnTo = params.get("openid.return_to") ?? "";

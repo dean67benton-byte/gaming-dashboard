@@ -16,7 +16,7 @@ Open http://localhost:3000 and sign in through Steam.
 | --- | --- |
 | `STEAM_API_KEY` | From https://steamcommunity.com/dev/apikey (`localhost` is fine as the domain) |
 | `SESSION_SECRET` | Any long random string, e.g. `openssl rand -base64 32` |
-| `APP_URL` | Where the app runs, `http://localhost:3000` locally |
+| `APP_URL` | Optional. Where the app runs; defaults to the request's own URL |
 | `DEMO_MODE` | `1` shows sample data without signing in |
 
 Without `STEAM_API_KEY` the app runs in demo mode automatically.

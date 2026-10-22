@@ -1,8 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
+import { appUrl as getAppUrl } from "@/lib/app-url";
 
 // Starts Steam OpenID 2.0 sign in.
-export function GET() {
-  const appUrl = process.env.APP_URL ?? "http://localhost:3000";
+export function GET(req: NextRequest) {
+  const appUrl = getAppUrl(req);
   const params = new URLSearchParams({
     "openid.ns": "http://specs.openid.net/auth/2.0",
     "openid.mode": "checkid_setup",
