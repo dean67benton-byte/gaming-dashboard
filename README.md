@@ -19,10 +19,18 @@ Open http://localhost:3000 and sign in through Steam.
 | `APP_URL` | Optional. Where the app runs; defaults to the request's own URL |
 | `DEMO_MODE` | `1` shows sample data without signing in |
 | `OVERWATCH_BATTLETAG` | Your BattleTag, e.g. `Name#1234`. Career profile must be public in game |
+| `KV_REST_API_URL`, `KV_REST_API_TOKEN` | Optional. Free Upstash Redis (Vercel → Storage → Upstash for Redis) for tracking and grading recent sessions. Added automatically when you connect it in Vercel |
+| `CRON_SECRET` | Optional. Protects the daily snapshot cron |
 
 Without `STEAM_API_KEY` the app runs in demo mode automatically.
 
 Your Steam profile's **Game details** must be Public, or Steam returns no games.
+
+## Grades
+
+Heroes, roles and sessions get a letter (S, A, B, C, D, F) from comparing them with your own normal: a hero against your other heroes in the same role, a role against your overall stats, and a session against your career numbers on the heroes you played. B means you played like you usually do.
+
+Blizzard doesn't publish match history, so sessions come from snapshots of your career totals, saved when you open the Overwatch page and once a day by a Vercel cron.
 
 ## Roadmap
 
