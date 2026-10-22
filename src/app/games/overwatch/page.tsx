@@ -3,6 +3,7 @@ import CoachPanel from "@/components/CoachPanel";
 import GradeBadge from "@/components/GradeBadge";
 import HeroExplorer, { type HeroCard } from "@/components/HeroExplorer";
 import Portrait from "@/components/Portrait";
+import RankEmblem from "@/components/RankEmblem";
 import Ring from "@/components/Ring";
 import Shell from "@/components/Shell";
 import { buildTips, coachingPrompt } from "@/lib/coach";
@@ -10,7 +11,9 @@ import { grade } from "@/lib/grades";
 import {
   formatRank,
   getCompetitiveStats,
+  getHeroArt,
   getHeroes,
+  getMapOfTheDay,
   getSummary,
   heroRows,
   hoursFromSeconds,
@@ -18,6 +21,7 @@ import {
   resolvePlayerId,
   ROLES,
   type HeroRow,
+  type OwMap,
   type RankInfo,
   type StatBlock,
 } from "@/lib/overwatch";
@@ -84,6 +88,9 @@ export default async function OverwatchPage() {
         grade: r.games_played >= MIN_GAMES ? grade(r, base) : null,
       };
     });
+  // Splash art for the most played heroes; the rest show their portrait.
+  const [arts, map] = await Promise.all([Promise.all(heroCards.slice(0, 8).map((h) => getHeroArt(h.key))), getMapOfTheDay()]);
+  arts.forEach((art, i) => (heroCards[i].art = art));
   const topHero = heroCards.find((h) => h.grade) ?? heroCards[0];
   const portraits = Object.fromEntries(rows.map((r) => [r.key, r]));
   const pc = summary.competitive?.pc;
@@ -91,13 +98,13 @@ export default async function OverwatchPage() {
   return (
     <Shell active="Overwatch">
       <section className="card relative mb-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-accent/25 via-accent-2/10 to-transparent" />
+        <MapBackdrop map={map} />
         <div className="relative flex flex-wrap items-center gap-4 p-5 md:p-6">
           <Portrait src={summary.avatar} name={summary.username} className="h-16 w-16 rounded-2xl ring-2 ring-accent" />
           <div className="min-w-0">
             <div className="text-xs uppercase tracking-wide text-muted">Overwatch 2 · Competitive{pc?.season ? ` · Season ${pc.season}` : ""}</div>
             <h1 className="truncate text-2xl font-bold md:text-3xl">{demo ? "Demo player" : summary.username}</h1>
-            {summary.endorsement?.level ? <div className="text-sm text-muted">Endorsement level {summary.endorsement.level}</div> : null}
+            {summary.endorsement?.level ? <div className="text-sm text-foreground/70">Endorsement level {summary.endorsement.level}</div> : null}
           </div>
           <div className="flex w-full gap-2 sm:ml-auto sm:w-auto">
             {ROLES.map((role) => (
@@ -138,15 +145,23 @@ export default async function OverwatchPage() {
   );
 }
 
+function MapBackdrop({ map }: { map: OwMap | null }) {
+  if (!map) return <div className="absolute inset-0 bg-gradient-to-r from-accent/25 via-accent-2/10 to-transparent" />;
+  return (
+    <>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={map.screenshot} alt="" className="absolute inset-0 h-full w-full object-cover" />
+      <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/75 to-background/40" />
+      <div className="absolute inset-0 bg-gradient-to-t from-surface/80 to-transparent" />
+      <span className="absolute bottom-2 right-3 text-[10px] uppercase tracking-wide text-foreground/50">{map.name}</span>
+    </>
+  );
+}
+
 function RankChip({ role, rank }: { role: string; rank: RankInfo }) {
   return (
     <div className="flex flex-1 items-center gap-2 rounded-xl bg-background/60 px-3 py-2 backdrop-blur sm:flex-none">
-      {rank?.rank_icon ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={rank.rank_icon} alt="" className="h-8 w-8" />
-      ) : (
-        <div className="h-8 w-8 rounded-full bg-surface-2" />
-      )}
+      <RankEmblem rank={rank} className="h-9 w-9" />
       <div>
         <div className="text-[11px] text-muted">{role}</div>
         <div className="text-sm font-semibold">{formatRank(rank)}</div>
@@ -186,10 +201,19 @@ function Overview({ g }: { g: StatBlock }) {
 
 function TopHero({ hero }: { hero: HeroCard }) {
   return (
-    <section className="card relative overflow-hidden p-5">
-      <div className="pointer-events-none absolute -right-10 -top-10 h-64 w-64 rounded-full bg-accent-2/15 blur-3xl" />
+    <section className="card relative min-h-64 overflow-hidden p-5">
+      {hero.art ? (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={hero.art} alt="" className="absolute inset-0 h-full w-full object-cover object-[70%_20%]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-surface via-surface/85 to-surface/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent" />
+        </>
+      ) : (
+        <div className="pointer-events-none absolute -right-10 -top-10 h-64 w-64 rounded-full bg-accent-2/15 blur-3xl" />
+      )}
       <div className="relative flex h-full flex-col gap-4 sm:flex-row">
-        <Portrait src={hero.portrait} name={hero.name} className="h-40 w-full rounded-2xl sm:h-auto sm:w-40" />
+        <Portrait src={hero.portrait} name={hero.name} className="h-20 w-20 rounded-2xl ring-2 ring-accent/70" />
         <div className="flex min-w-0 flex-1 flex-col">
           <div className="flex items-start gap-3">
             <div className="min-w-0">
@@ -203,7 +227,7 @@ function TopHero({ hero }: { hero: HeroCard }) {
               <GradeBadge letter={hero.grade?.letter ?? null} score={hero.grade?.score} size="lg" />
             </div>
           </div>
-          <div className="mt-auto grid grid-cols-3 gap-2 pt-4">
+          <div className="mt-auto grid max-w-md grid-cols-3 gap-2 pt-4">
             <Tile label="Win rate" value={`${hero.winrate.toFixed(1)}%`} tone={hero.winrate >= 50 ? "text-good" : "text-bad"} />
             <Tile label="KDA" value={hero.kda.toFixed(2)} />
             <Tile label="Damage / 10" value={Math.round(hero.average.damage).toLocaleString()} />
@@ -290,12 +314,7 @@ function RoleCard({ label, rank, stats, letter, score }: { label: string; rank: 
   return (
     <div className="card p-5">
       <div className="flex items-center gap-3">
-        {rank?.rank_icon ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={rank.rank_icon} alt="" className="h-10 w-10" />
-        ) : (
-          <div className="h-10 w-10 rounded-full bg-surface-2" />
-        )}
+        <RankEmblem rank={rank} className="h-11 w-11" />
         <div>
           <div className="font-semibold">{label}</div>
           <div className="text-sm text-muted">{formatRank(rank)}</div>

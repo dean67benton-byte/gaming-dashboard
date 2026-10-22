@@ -63,14 +63,16 @@ export const demoOwStats: OwStats = {
   heroes,
 };
 
+const portrait = (hash: string) => `https://d15f34w2p8l1cc.cloudfront.net/overwatch/${hash}.png`;
+
 export const demoOwHeroes: HeroInfo[] = [
-  { key: "ana", name: "Ana", portrait: "", role: "support" },
-  { key: "kiriko", name: "Kiriko", portrait: "", role: "support" },
-  { key: "lucio", name: "Lúcio", portrait: "", role: "support" },
-  { key: "mercy", name: "Mercy", portrait: "", role: "support" },
-  { key: "junker-queen", name: "Junker Queen", portrait: "", role: "tank" },
-  { key: "reinhardt", name: "Reinhardt", portrait: "", role: "tank" },
-  { key: "soldier-76", name: "Soldier: 76", portrait: "", role: "damage" },
-  { key: "cassidy", name: "Cassidy", portrait: "", role: "damage" },
-  { key: "tracer", name: "Tracer", portrait: "", role: "damage" },
+  { key: "ana", name: "Ana", portrait: portrait("985b06beae46b7ba3ca87d1512d0fc62ca7f206ceca58ef16fc44d43a1cc84ed"), role: "support" },
+  { key: "kiriko", name: "Kiriko", portrait: portrait("408603fe037e8576078eaac5eab2fb251489ced4003b11f5f522776d43d0b83d"), role: "support" },
+  { key: "lucio", name: "Lúcio", portrait: portrait("040bb13f5123ab93faad2f95627ba184608aef4b2469a4d3003859c7087df044"), role: "support" },
+  { key: "mercy", name: "Mercy", portrait: portrait("3bfb8bd8ec827e53d870f1238ab73d8aa1f5dbfbcfaaf7f96ffcd35b5c6102ab"), role: "support" },
+  { key: "junker-queen", name: "Junker Queen", portrait: portrait("06eeecb359f311f43a8f5121d4f9f3a93c565d70b30e94ef543c05596c9a39dc"), role: "tank" },
+  { key: "reinhardt", name: "Reinhardt", portrait: portrait("551fbe070c16fdfcc17f7f1de63af22c53e7d2f1340fc2f3172441504527bc4e"), role: "tank" },
+  { key: "soldier-76", name: "Soldier: 76", portrait: portrait("c93b5f0a528c40473188f77cc2a267aee7d5b6cf5c9e104105d634b4388674e2"), role: "damage" },
+  { key: "cassidy", name: "Cassidy", portrait: portrait("9240cd64cc8ef58df9acbf55204ab1b5d8578f743fda5931f0dbccbd75ab841b"), role: "damage" },
+  { key: "tracer", name: "Tracer", portrait: portrait("4504f6f15cb3feaa92ecd38e01dcf751cb5abdac2e0bb52d0555727e53277502"), role: "damage" },
 ];

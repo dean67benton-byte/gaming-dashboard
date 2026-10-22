@@ -17,6 +17,7 @@ export type RankInfo = {
 export type OwSummary = {
   username: string;
   avatar?: string | null;
+  namecard?: string | null;
   title?: string | null;
   endorsement?: { level: number } | null;
   competitive?: {
@@ -47,8 +48,8 @@ export type HeroInfo = { key: string; name: string; portrait: string; role: Role
 /** "RIOTAtlas#1518" → "RIOTAtlas-1518" */
 export const playerId = (battletag: string) => battletag.replace(/\s+/g, "").replace("#", "-");
 
-async function call<T>(path: string): Promise<T | null> {
-  const res = await fetch(`${API}${path}`, { next: { revalidate: 3600 } });
+async function call<T>(path: string, revalidate = 3600): Promise<T | null> {
+  const res = await fetch(`${API}${path}`, { next: { revalidate } });
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`OverFast ${path} failed: ${res.status}`);
   return res.json() as Promise<T>;
@@ -88,9 +89,39 @@ export async function getCompetitiveStats(id: string) {
   return call<OwStats>(`/players/${encodeURIComponent(id)}/stats/summary?gamemode=competitive&platform=pc`);
 }
 
+// Hero list, art and maps are public, so they load in demo mode too.
 export async function getHeroes(): Promise<HeroInfo[]> {
-  if (isDemo()) return demoOwHeroes;
-  return (await call<HeroInfo[]>("/heroes")) ?? [];
+  try {
+    const heroes = await call<HeroInfo[]>("/heroes", 86400);
+    if (heroes?.length) return heroes;
+  } catch {}
+  return isDemo() ? demoOwHeroes : [];
+}
+
+type HeroDetail = { backgrounds?: { url: string; sizes: string[] }[] };
+
+/** Large splash art for a hero, or null when there is none. */
+export async function getHeroArt(key: string): Promise<string | null> {
+  try {
+    const hero = await call<HeroDetail>(`/heroes/${encodeURIComponent(key)}`, 86400);
+    const bgs = hero?.backgrounds ?? [];
+    return (bgs.find((b) => b.sizes.includes("md")) ?? bgs[0])?.url ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export type OwMap = { key: string; name: string; screenshot: string; gamemodes: string[]; location?: string };
+const COMP_MODES = ["escort", "hybrid", "push", "control", "flashpoint"];
+
+/** A competitive map for the page backdrop, changing once a day. */
+export async function getMapOfTheDay(): Promise<OwMap | null> {
+  try {
+    const maps = ((await call<OwMap[]>("/maps", 86400)) ?? []).filter((m) => m.gamemodes.some((g) => COMP_MODES.includes(g)));
+    return maps.length ? maps[Math.floor(Date.now() / 86_400_000) % maps.length] : null;
+  } catch {
+    return null;
+  }
 }
 
 // Heroes with fewer games than this are too noisy to call strengths or weaknesses.

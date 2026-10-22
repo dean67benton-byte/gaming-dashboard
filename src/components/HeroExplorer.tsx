@@ -6,7 +6,7 @@ import Portrait from "@/components/Portrait";
 import type { Grade } from "@/lib/grades";
 import type { HeroRow, Role } from "@/lib/overwatch";
 
-export type HeroCard = HeroRow & { grade: Grade | null; hours: number; share: number };
+export type HeroCard = HeroRow & { grade: Grade | null; hours: number; share: number; art?: string | null };
 
 const ROLE_LABEL: Record<Role, string> = { tank: "Tank", damage: "Damage", support: "Support" };
 const FILTERS = ["all", "tank", "damage", "support"] as const;
@@ -71,9 +71,18 @@ export default function HeroExplorer({ heroes, minGames }: { heroes: HeroCard[];
 
       {hero && (
         <div className="relative p-5 md:p-6">
-          <div className="pointer-events-none absolute right-0 top-0 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
+          {hero.art ? (
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-56 overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img key={hero.key} src={hero.art} alt="" className="h-full w-full object-cover object-[70%_15%] opacity-60" />
+              <div className="absolute inset-0 bg-gradient-to-r from-surface via-surface/70 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-surface to-transparent" />
+            </div>
+          ) : (
+            <div className="pointer-events-none absolute right-0 top-0 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
+          )}
           <div className="relative flex items-center gap-4">
-            <Portrait src={hero.portrait} name={hero.name} className="h-20 w-20 rounded-2xl" />
+            <Portrait key={hero.key} src={hero.portrait} name={hero.name} className="h-20 w-20 rounded-2xl ring-2 ring-accent/70" />
             <div className="min-w-0">
               <div className="text-xs uppercase tracking-wide text-muted">{hero.role ? ROLE_LABEL[hero.role] : "Hero"}</div>
               <h3 className="truncate text-2xl font-bold">{hero.name}</h3>
