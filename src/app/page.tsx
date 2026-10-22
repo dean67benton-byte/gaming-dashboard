@@ -1,4 +1,5 @@
 import Link from "next/link";
+import GameArt from "@/components/GameArt";
 import LibraryTable, { type LibraryRow } from "@/components/LibraryTable";
 import { DEEP_DIVES } from "@/lib/deep-dives";
 import { getSession } from "@/lib/session";
@@ -71,8 +72,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ e
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {recent.map((g) => (
               <div key={g.appid} className="overflow-hidden rounded-lg border border-border bg-surface">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={headerImage(g.appid)} alt="" className="aspect-[460/215] w-full object-cover" />
+                <GameArt src={headerImage(g.appid)} name={g.name} />
                 <div className="p-3">
                   <div className="font-medium">
                     {DEEP_DIVES[g.appid] ? (
