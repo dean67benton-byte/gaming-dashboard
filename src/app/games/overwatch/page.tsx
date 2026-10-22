@@ -9,6 +9,7 @@ import {
   heroRows,
   hoursFromSeconds,
   MIN_GAMES,
+  resolvePlayerId,
   ROLES,
   strengths,
   type HeroRow,
@@ -30,7 +31,16 @@ export default async function OverwatchPage() {
 
   let data;
   try {
-    data = await Promise.all([getSummary(tag), getCompetitiveStats(tag), getHeroes()]);
+    const id = await resolvePlayerId(tag);
+    if (!id) {
+      return (
+        <Notice>
+          No Overwatch profile found for <b>{tag}</b>. Check the BattleTag, including capitals, and make sure your career
+          profile is set to Public in game (Options → Social → Career Profile Visibility).
+        </Notice>
+      );
+    }
+    data = await Promise.all([getSummary(id), getCompetitiveStats(id), getHeroes()]);
   } catch {
     return <Notice>The Overwatch stats service isn&apos;t responding right now. Try again in a few minutes.</Notice>;
   }

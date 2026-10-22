@@ -70,4 +70,21 @@ export async function getRecentGames(steamid: string): Promise<RecentGame[]> {
 export const headerImage = (appid: number) =>
   `https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${appid}/header.jpg`;
 
+/**
+ * Newer games keep their art under a hashed path, so ask the store for the
+ * real URL and fall back to the classic path if that fails.
+ */
+export async function getHeaderImage(appid: number): Promise<string> {
+  if (isDemo()) return headerImage(appid);
+  try {
+    const res = await fetch(`https://store.steampowered.com/api/appdetails?appids=${appid}&filters=basic`, {
+      next: { revalidate: 86400 },
+    });
+    const data = (await res.json()) as Record<string, { success: boolean; data?: { header_image?: string } }>;
+    return data[appid]?.data?.header_image ?? headerImage(appid);
+  } catch {
+    return headerImage(appid);
+  }
+}
+
 export const hours = (minutes: number) => Math.round((minutes / 60) * 10) / 10;
