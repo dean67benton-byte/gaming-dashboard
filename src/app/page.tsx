@@ -1,103 +1,130 @@
-import Image from "next/image";
+import LibraryTable, { type LibraryRow } from "@/components/LibraryTable";
+import { getSession } from "@/lib/session";
+import { getOwnedGames, getProfile, getRecentGames, headerImage, hours, isDemo } from "@/lib/steam";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
+  const demo = isDemo();
+  const steamid = demo ? "demo" : await getSession();
+  if (!steamid) return <SignIn failed={(await searchParams).error === "signin"} />;
+
+  const [profile, owned, recent] = await Promise.all([
+    getProfile(steamid),
+    getOwnedGames(steamid),
+    getRecentGames(steamid),
+  ]);
+
+  const rows: LibraryRow[] = owned.map((g) => ({
+    appid: g.appid,
+    name: g.name,
+    hours: hours(g.playtime_forever),
+    hours2w: hours(g.playtime_2weeks ?? 0),
+    lastPlayed: g.rtime_last_played || null,
+  }));
+  const totalHours = rows.reduce((sum, r) => sum + r.hours, 0);
+  const recentHours = recent.reduce((sum, g) => sum + hours(g.playtime_2weeks), 0);
+  const top = [...rows].sort((a, b) => b.hours - a.hours).slice(0, 8);
+  const maxHours = top[0]?.hours || 1;
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <main className="mx-auto max-w-6xl px-4 py-8">
+      <header className="mb-8 flex items-center gap-4">
+        {profile?.avatarfull ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={profile.avatarfull} alt="" className="h-14 w-14 rounded-lg" />
+        ) : (
+          <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-surface text-xl font-semibold text-muted">
+            {profile?.personaname?.[0] ?? "?"}
+          </div>
+        )}
+        <div>
+          <h1 className="text-2xl font-semibold">{profile?.personaname ?? "Your games"}</h1>
+          <p className="text-sm text-muted">{demo ? "Demo data. Add a Steam API key to see your own." : "Steam"}</p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        {!demo && (
+          <form action="/api/auth/logout" method="post" className="ml-auto">
+            <button className="text-sm text-muted hover:text-foreground">Sign out</button>
+          </form>
+        )}
+      </header>
+
+      {owned.length === 0 && (
+        <p className="mb-8 rounded-lg border border-border bg-surface p-4 text-sm">
+          No games came back from Steam. Set <b>Game details</b> to Public in your Steam privacy settings, then refresh.
+        </p>
+      )}
+
+      <section className="mb-8 grid grid-cols-2 gap-3 md:grid-cols-4">
+        <Stat label="Games owned" value={rows.length.toLocaleString()} />
+        <Stat label="Games played" value={rows.filter((r) => r.hours > 0).length.toLocaleString()} />
+        <Stat label="Total hours" value={Math.round(totalHours).toLocaleString()} />
+        <Stat label="Hours, last 2 weeks" value={recentHours.toFixed(1)} />
+      </section>
+
+      {recent.length > 0 && (
+        <section className="mb-8">
+          <h2 className="mb-3 text-lg font-semibold">Recently played</h2>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {recent.map((g) => (
+              <div key={g.appid} className="overflow-hidden rounded-lg border border-border bg-surface">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={headerImage(g.appid)} alt="" className="aspect-[460/215] w-full object-cover" />
+                <div className="p-3">
+                  <div className="font-medium">{g.name}</div>
+                  <div className="text-sm text-muted">
+                    {hours(g.playtime_2weeks)} h last 2 weeks · {hours(g.playtime_forever).toLocaleString()} h total
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {top.length > 0 && (
+        <section className="mb-8">
+          <h2 className="mb-3 text-lg font-semibold">Most played</h2>
+          <div className="space-y-2 rounded-lg border border-border bg-surface p-4">
+            {top.map((g) => (
+              <div key={g.appid} className="grid grid-cols-[minmax(0,12rem)_1fr_4.5rem] items-center gap-3 text-sm">
+                <span className="truncate">{g.name}</span>
+                <div className="h-2 rounded bg-background">
+                  <div className="h-2 rounded bg-accent" style={{ width: `${(g.hours / maxHours) * 100}%` }} />
+                </div>
+                <span className="text-right tabular-nums text-muted">{g.hours.toLocaleString()} h</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section>
+        <h2 className="mb-3 text-lg font-semibold">Library</h2>
+        <LibraryTable rows={rows} />
+      </section>
+    </main>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-lg border border-border bg-surface p-4">
+      <div className="text-sm text-muted">{label}</div>
+      <div className="mt-1 text-2xl font-semibold tabular-nums">{value}</div>
     </div>
+  );
+}
+
+function SignIn({ failed }: { failed: boolean }) {
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-center gap-4 px-4 text-center">
+      <h1 className="text-3xl font-semibold">Gaming Dashboard</h1>
+      <p className="max-w-md text-muted">Sign in with Steam to see your library, hours and recently played games.</p>
+      {failed && <p className="text-sm text-red-400">Steam sign in failed. Try again.</p>}
+      <a href="/api/auth/steam" className="rounded-md bg-accent px-5 py-2.5 font-medium text-background hover:opacity-90">
+        Sign in through Steam
+      </a>
+    </main>
   );
 }
