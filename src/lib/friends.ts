@@ -74,7 +74,7 @@ export function rankPicks(shared: SharedGame[], store: Map<number, StoreInfo>, f
 }
 
 export const presence = (p: SteamProfile) =>
-  p.gameextrainfo ? `In ${p.gameextrainfo}` : p.personastate ? "Online" : p.lastlogoff ? `Last online ${ago(p.lastlogoff)}` : "Offline";
+  p.gameextrainfo ? `In ${p.gameextrainfo}` : p.personastate ? "Online" : p.lastlogoff ? `Seen ${ago(p.lastlogoff)}` : "Offline";
 
 // In game first, then online, then by when they were last on.
 export const presenceRank = (p: SteamProfile) => (p.gameextrainfo ? 2e10 : p.personastate ? 1e10 : 0) + (p.lastlogoff ?? 0);

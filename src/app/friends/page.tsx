@@ -1,9 +1,11 @@
 import Link from "next/link";
 import FreePicker, { type FreePick } from "@/components/FreePicker";
+import FriendPicker, { Avatar, type FriendChip } from "@/components/FriendPicker";
 import GameArt from "@/components/GameArt";
 import Shell from "@/components/Shell";
 import StratRoulette from "@/components/StratRoulette";
 import { FREE_MULTIPLAYER, ago, presence, presenceRank, rankPicks, sharedGames, type SharedGame, type StratGame } from "@/lib/friends";
+import { getFavorites } from "@/lib/favorites";
 import { getSession } from "@/lib/session";
 import { getFriendGames, getFriends, getHeaderImage, getOwnedGames, getStoreInfo, headerImage, hours, isDemo, type SteamProfile } from "@/lib/steam";
 
@@ -26,8 +28,12 @@ export default async function FriendsPage({ searchParams }: { searchParams: Prom
     );
   }
 
-  const [friendsRaw, mine] = await Promise.all([getFriends(steamid), getOwnedGames(steamid).catch(() => [])]);
-  const friends = [...(friendsRaw ?? [])].sort((a, b) => presenceRank(b) - presenceRank(a));
+  const [friendsRaw, mine, favorites] = await Promise.all([getFriends(steamid), getOwnedGames(steamid).catch(() => []), getFavorites(steamid)]);
+  const fav = new Set(favorites);
+  // Favorites first, then whoever is most active.
+  const friends = [...(friendsRaw ?? [])].sort(
+    (a, b) => Number(fav.has(b.steamid)) - Number(fav.has(a.steamid)) || presenceRank(b) - presenceRank(a),
+  );
   const wanted = (await searchParams).friend;
   const friend = friends.find((f) => f.steamid === wanted) ?? friends[0];
 
@@ -69,32 +75,13 @@ export default async function FriendsPage({ searchParams }: { searchParams: Prom
       )}
       {friendsRaw?.length === 0 && <p className="card mb-4 p-4 text-sm">No friends on your Steam account yet.</p>}
 
-      {friends.length > 0 && (
-        <div className="no-scrollbar -mx-1 mb-4 flex snap-x gap-2 overflow-x-auto px-1 pb-1">
-          {friends.map((f) => (
-            <Link
-              key={f.steamid}
-              href={`/friends?friend=${f.steamid}`}
-              scroll={false}
-              className={`card flex w-52 shrink-0 snap-start items-center gap-3 px-3 py-2.5 ${
-                f.steamid === friend?.steamid ? "border-accent bg-accent/10" : "hover:border-accent/60"
-              }`}
-            >
-              <Avatar profile={f} size="h-9 w-9" />
-              <div className="min-w-0">
-                <div className="truncate text-sm font-medium">{f.personaname}</div>
-                <div className={`truncate text-xs ${f.gameextrainfo ? "text-good" : "text-muted"}`}>{presence(f)}</div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
+      {friends.length > 0 && <FriendPicker friends={friends.map(chip)} favorites={favorites} selected={friend?.steamid} />}
 
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_340px]">
         <div className="min-w-0 space-y-4">
           {friend && (
             <section className="card flex flex-wrap items-center gap-4 p-5">
-              <Avatar profile={friend} size="h-14 w-14" />
+              <Avatar friend={chip(friend)} size="h-14 w-14" />
               <div className="min-w-0 flex-1 basis-40">
                 <h2 className="truncate text-xl font-semibold">{friend.personaname}</h2>
                 <p className={`text-sm ${friend.gameextrainfo ? "text-good" : "text-muted"}`}>{presence(friend)}</p>
@@ -206,22 +193,14 @@ function HoursCompare({ me, them, name }: { me: number; them: number; name: stri
   );
 }
 
-function Avatar({ profile, size }: { profile: SteamProfile; size: string }) {
-  const dot = profile.gameextrainfo ? "bg-good" : profile.personastate ? "bg-accent" : "bg-muted/50";
-  return (
-    <div className={`relative shrink-0 ${size}`}>
-      {profile.avatarfull ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={profile.avatarfull} alt="" className="h-full w-full rounded-full" />
-      ) : (
-        <div className="flex h-full w-full items-center justify-center rounded-full bg-surface-2 font-semibold text-muted">
-          {profile.personaname[0]?.toUpperCase()}
-        </div>
-      )}
-      <span className={`absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full ring-2 ring-surface ${dot}`} />
-    </div>
-  );
-}
+const chip = (p: SteamProfile): FriendChip => ({
+  steamid: p.steamid,
+  name: p.personaname,
+  avatar: p.avatarfull,
+  status: presence(p),
+  inGame: !!p.gameextrainfo,
+  online: !!p.personastate,
+});
 
 function Mini({ label, value }: { label: string; value: string }) {
   return (

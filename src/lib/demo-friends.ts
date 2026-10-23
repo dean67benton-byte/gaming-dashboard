@@ -22,6 +22,7 @@ export const demoFriends: SteamProfile[] = [
   friend("demo-3", "Kestrel", { personastate: 3, lastlogoff: daysAgo(0) }),
   friend("demo-4", "dumpling", { lastlogoff: daysAgo(2) }),
   friend("demo-5", "R4ZE", { lastlogoff: daysAgo(9) }),
+  friend("demo-7", "Jerry", { lastlogoff: daysAgo(5) }),
   friend("demo-6", "private_pat", { lastlogoff: daysAgo(30), communityvisibilitystate: 1 }),
 ];
 
@@ -67,6 +68,12 @@ export const demoFriendGames: Record<string, OwnedGame[] | null> = {
   ],
   "demo-5": [g(730, "Counter-Strike 2", 3200, 1, 30), g(440, "Team Fortress 2", 800, 900)],
   "demo-6": null,
+  "demo-7": [
+    g(2357570, "Overwatch 2", 420, 5, 8),
+    g(359550, "Tom Clancy's Rainbow Six Siege", 900, 80),
+    g(1966720, "Lethal Company", 50, 30),
+    g(548430, "Deep Rock Galactic", 130, 15),
+  ],
 };
 
 const info = (appid: number, categories: number[], isFree = false): StoreInfo => ({ headerImage: art(appid), isFree, categories });
