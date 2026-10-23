@@ -1,5 +1,6 @@
 import { grade, letterFor, type Letter } from "./grades";
 import type { OwStats, StatBlock } from "./overwatch";
+import { redis } from "./redis";
 import { isDemo } from "./steam";
 
 // Blizzard only publishes career totals, not match history. To follow recent
@@ -25,22 +26,6 @@ export type Session = {
 };
 
 const KEEP = 60;
-
-function redis() {
-  const url = process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (!url || !token) return null;
-  return async <T>(...command: (string | number)[]): Promise<T> => {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-      body: JSON.stringify(command),
-      cache: "no-store",
-    });
-    if (!res.ok) throw new Error(`Redis ${command[0]} failed: ${res.status}`);
-    return ((await res.json()) as { result: T }).result;
-  };
-}
 
 export const trackingEnabled = () => isDemo() || !!redis();
 
