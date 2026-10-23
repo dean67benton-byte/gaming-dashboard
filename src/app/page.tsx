@@ -18,7 +18,12 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ e
   const steamid = demo ? "demo" : await getSession();
   if (!steamid) return <SignIn failed={(await searchParams).error === "signin"} />;
 
-  const [owned, recent] = await Promise.all([getOwnedGames(steamid), getRecentGames(steamid)]);
+  let owned, recent;
+  try {
+    [owned, recent] = await Promise.all([getOwnedGames(steamid), getRecentGames(steamid)]);
+  } catch (err) {
+    return <SteamError status={(err as Error).message.match(/(\d{3})$/)?.[1]} />;
+  }
 
   const rows: LibraryRow[] = owned.map((g) => ({
     appid: g.appid,
@@ -238,6 +243,23 @@ function Mini({ label, value }: { label: string; value: string }) {
       <div className="font-semibold tabular-nums">{value}</div>
       <div className="text-[11px] text-muted">{label}</div>
     </div>
+  );
+}
+
+function SteamError({ status }: { status?: string }) {
+  const keyProblem = status === "401" || status === "403";
+  return (
+    <Shell active="Home">
+      <section className="card max-w-2xl p-6">
+        <h1 className="mb-3 text-2xl font-semibold">Steam didn&apos;t answer</h1>
+        <p className="text-muted">
+          {keyProblem
+            ? "Steam rejected the API key. Check that STEAM_API_KEY in Vercel is your current key from steamcommunity.com/dev/apikey, then redeploy."
+            : "Steam's API returned an error. It's usually temporary, so try again in a few minutes."}
+          {status && <span className="mt-2 block text-xs">Error {status}</span>}
+        </p>
+      </section>
+    </Shell>
   );
 }
 
