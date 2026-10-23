@@ -9,7 +9,7 @@ type NavItem = { href: string; label: string; icon: keyof typeof ICONS; soon?: b
 const NAV: NavItem[] = [
   { href: "/", label: "Home", icon: "home" },
   { href: "/coaching", label: "Coaching", icon: "target" },
-  { href: "#", label: "Friends", icon: "users", soon: true },
+  { href: "/friends", label: "Friends", icon: "users" },
   { href: "#", label: "Deals", icon: "tag", soon: true },
 ];
 

@@ -24,7 +24,7 @@ Open http://localhost:3000 and sign in through Steam.
 
 Without `STEAM_API_KEY` the app runs in demo mode automatically.
 
-Your Steam profile's **Game details** must be Public, or Steam returns no games.
+Your Steam profile's **Game details** must be Public, or Steam returns no games. The Friends tab also needs your **Friends list** to be Public, and only compares libraries with friends whose game details are Public.
 
 ## Grades
 
