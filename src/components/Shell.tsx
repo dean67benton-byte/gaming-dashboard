@@ -10,7 +10,7 @@ const NAV: NavItem[] = [
   { href: "/", label: "Home", icon: "home" },
   { href: "/coaching", label: "Coaching", icon: "target" },
   { href: "/friends", label: "Friends", icon: "users" },
-  { href: "#", label: "Deals", icon: "tag", soon: true },
+  { href: "/deals", label: "Deals", icon: "tag" },
 ];
 
 const ICONS = {
