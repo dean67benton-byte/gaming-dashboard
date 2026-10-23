@@ -77,11 +77,11 @@ const line = (name: string, s: StatBlock) =>
   `${name}: ${s.games_played} games, ${s.winrate}% win, ${hoursFromSeconds(s.time_played)}h, KDA ${s.kda}, per 10 min: ${s.average.eliminations} elims, ${s.average.deaths} deaths, ${s.average.damage} dmg, ${s.average.healing} heal`;
 
 /** A self-contained prompt to paste into Claude chat. */
-export function coachingPrompt(summary: OwSummary | null, stats: OwStats, heroes: HeroRow[]) {
+export function coachingPrompt(summary: OwSummary | null, stats: OwStats, heroes: HeroRow[], modeLabel = "Competitive") {
   const pc = summary?.competitive?.pc;
   const ranks = ROLES.map((r) => `${r}: ${formatRank(pc?.[r] ?? null)}`).join(", ");
   return [
-    "You are an Overwatch 2 coach. Review my competitive stats below.",
+    `You are an Overwatch 2 coach. Review my ${modeLabel.toLowerCase()} stats below.`,
     "Base every point on the numbers and cite them. Treat heroes with fewer than 5 games as too small a sample.",
     "Tell me: (1) a short read on my playstyle, (2) heroes and roles to lean into, (3) what to cut back on, (4) specific things to practice next.",
     "",
