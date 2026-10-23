@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import GameArt from "@/components/GameArt";
+import PatchWatch from "@/components/PatchWatch";
 import Shell from "@/components/Shell";
 import { COACHING_GAMES, DEEP_DIVES } from "@/lib/deep-dives";
 import { getSession } from "@/lib/session";
@@ -30,6 +32,11 @@ export default async function CoachingPage() {
         <p className="card mb-4 p-4 text-sm">
           <Link href="/" className="text-accent">Sign in</Link> to see your hours here.
         </p>
+      )}
+      {steamid && (
+        <Suspense fallback={null}>
+          <PatchWatch steamid={steamid} owned={owned} />
+        </Suspense>
       )}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {games.map((g, i) => {
