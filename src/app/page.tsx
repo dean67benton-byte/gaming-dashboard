@@ -3,7 +3,7 @@ import GameArt from "@/components/GameArt";
 import LibraryTable, { type LibraryRow } from "@/components/LibraryTable";
 import Ring from "@/components/Ring";
 import Shell from "@/components/Shell";
-import { DEEP_DIVES } from "@/lib/deep-dives";
+import { COACHING_GAMES, DEEP_DIVES } from "@/lib/deep-dives";
 import { getSession } from "@/lib/session";
 import { getHeaderImage, getOwnedGames, getRecentGames, hours, isDemo } from "@/lib/steam";
 
@@ -12,12 +12,6 @@ export const dynamic = "force-dynamic";
 const COLORS = ["var(--accent)", "var(--accent-2)", "#8b7bff", "#2dd4bf", "#fbbf24"];
 const OTHER = "#3a3f55";
 
-// Competitive games that get (or will get) their own stats page.
-const DIVES = [
-  { appid: 2357570, name: "Overwatch 2" },
-  { appid: 730, name: "Counter-Strike 2" },
-  { appid: 359550, name: "Rainbow Six Siege" },
-];
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
   const demo = isDemo();
@@ -160,9 +154,9 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ e
           </section>
 
           <section className="card p-5">
-            <h2 className="mb-3 font-semibold">Stats and coaching</h2>
+            <Link href="/coaching" className="mb-3 block font-semibold hover:text-accent">Stats and coaching →</Link>
             <div className="space-y-2">
-              {DIVES.map((d) => {
+              {COACHING_GAMES.map((d) => {
                 const href = DEEP_DIVES[d.appid];
                 const h = hoursById.get(d.appid);
                 const body = (

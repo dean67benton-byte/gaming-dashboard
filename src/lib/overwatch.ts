@@ -84,10 +84,18 @@ export async function getSummary(id: string) {
   return call<OwSummary>(`/players/${encodeURIComponent(id)}/summary`);
 }
 
-export async function getCompetitiveStats(id: string) {
+// Blizzard's public profile only tracks Quick Play and Competitive; "all" is both combined.
+export const MODES = { competitive: "Competitive", quickplay: "Quick Play", all: "All modes" } as const;
+export type Mode = keyof typeof MODES;
+export const toMode = (v?: string): Mode => (v && v in MODES ? (v as Mode) : "competitive");
+
+export async function getStats(id: string, mode: Mode) {
   if (isDemo()) return demoOwStats;
-  return call<OwStats>(`/players/${encodeURIComponent(id)}/stats/summary?gamemode=competitive&platform=pc`);
+  const gamemode = mode === "all" ? "" : `gamemode=${mode}&`;
+  return call<OwStats>(`/players/${encodeURIComponent(id)}/stats/summary?${gamemode}platform=pc`);
 }
+
+export const getCompetitiveStats = (id: string) => getStats(id, "competitive");
 
 // Hero list, art and maps are public, so they load in demo mode too.
 export async function getHeroes(): Promise<HeroInfo[]> {

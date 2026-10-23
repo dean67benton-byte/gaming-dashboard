@@ -10,20 +10,23 @@ import { buildTips, coachingPrompt } from "@/lib/coach";
 import { grade } from "@/lib/grades";
 import {
   formatRank,
-  getCompetitiveStats,
   getHeroArt,
   getHeroes,
   getMapOfTheDay,
+  getStats,
   getSummary,
   heroRows,
   hoursFromSeconds,
   MIN_GAMES,
+  MODES,
   resolvePlayerId,
   ROLES,
   type HeroRow,
+  type Mode,
   type OwMap,
   type RankInfo,
   type StatBlock,
+  toMode,
 } from "@/lib/overwatch";
 import { getSessions, recordSnapshot, trackingEnabled, type Session } from "@/lib/sessions";
 import { getSession } from "@/lib/session";
@@ -33,8 +36,9 @@ export const dynamic = "force-dynamic";
 
 const ROLE_LABEL = { tank: "Tank", damage: "Damage", support: "Support" } as const;
 
-export default async function OverwatchPage() {
+export default async function OverwatchPage({ searchParams }: { searchParams: Promise<{ mode?: string }> }) {
   const demo = isDemo();
+  const mode = toMode((await searchParams).mode);
   if (!demo && !(await getSession())) return <Notice>Sign in on the <Link href="/" className="text-accent">dashboard</Link> first.</Notice>;
 
   const tag = process.env.OVERWATCH_BATTLETAG ?? "";
@@ -52,12 +56,19 @@ export default async function OverwatchPage() {
         </Notice>
       );
     }
-    data = await Promise.all([getSummary(id), getCompetitiveStats(id), getHeroes()]);
+    data = await Promise.all([getSummary(id), getStats(id, mode), getHeroes()]);
   } catch {
     return <Notice>The Overwatch stats service isn&apos;t responding right now. Try again in a few minutes.</Notice>;
   }
   const [summary, stats, heroInfo] = data;
   if (!summary) return <Notice>No Overwatch profile found for <b>{tag}</b>. Check the BattleTag, including capitals.</Notice>;
+  if (summary.privacy !== "private" && !stats?.general && mode !== "all") {
+    return (
+      <Notice>
+        No {MODES[mode]} games on your public profile yet. <Link href="?mode=all" className="text-accent">See all modes</Link>.
+      </Notice>
+    );
+  }
   if (summary.privacy === "private" || !stats?.general) {
     return (
       <Notice>
@@ -67,12 +78,14 @@ export default async function OverwatchPage() {
     );
   }
 
-  // Session tracking is best effort; the page still works if storage is down.
+  // Session tracking (competitive only) is best effort; the page still works if storage is down.
   let sessions: Session[] = [];
-  try {
-    await recordSnapshot(id, stats);
-    sessions = await getSessions(id, stats);
-  } catch {}
+  if (mode === "competitive") {
+    try {
+      await recordSnapshot(id, stats);
+      sessions = await getSessions(id, stats);
+    } catch {}
+  }
 
   const g = stats.general;
   const rows = heroRows(stats, heroInfo);
@@ -96,13 +109,14 @@ export default async function OverwatchPage() {
   const pc = summary.competitive?.pc;
 
   return (
-    <Shell active="Overwatch">
+    <Shell active="Coaching">
+      <Link href="/coaching" className="mb-3 inline-block text-sm text-muted hover:text-foreground">← Coaching</Link>
       <section className="card relative mb-4 overflow-hidden">
         <MapBackdrop map={map} />
         <div className="relative flex flex-wrap items-center gap-4 p-5 md:p-6">
           <Portrait src={summary.avatar} name={summary.username} className="h-16 w-16 rounded-2xl ring-2 ring-accent" />
           <div className="min-w-0">
-            <div className="text-xs uppercase tracking-wide text-muted">Overwatch 2 · Competitive{pc?.season ? ` · Season ${pc.season}` : ""}</div>
+            <div className="text-xs uppercase tracking-wide text-muted">Overwatch 2{pc?.season ? ` · Season ${pc.season}` : ""}</div>
             <h1 className="truncate text-2xl font-bold md:text-3xl">{demo ? "Demo player" : summary.username}</h1>
             {summary.endorsement?.level ? <div className="text-sm text-foreground/70">Endorsement level {summary.endorsement.level}</div> : null}
           </div>
@@ -114,12 +128,14 @@ export default async function OverwatchPage() {
         </div>
       </section>
 
+      <ModeTabs mode={mode} />
+
       <div className="mb-4 grid gap-4 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-        <Overview g={g} />
+        <Overview g={g} title={`${MODES[mode]} overview`} />
         {topHero && <TopHero hero={topHero} />}
       </div>
 
-      <Sessions sessions={sessions} enabled={trackingEnabled()} heroes={portraits} />
+      {mode === "competitive" && <Sessions sessions={sessions} enabled={trackingEnabled()} heroes={portraits} />}
 
       <section className="mb-4 grid gap-4 md:grid-cols-3">
         {ROLES.map((role) => {
@@ -130,7 +146,7 @@ export default async function OverwatchPage() {
       </section>
 
       <section className="mb-4">
-        <CoachPanel tips={buildTips(summary, stats, rows)} prompt={coachingPrompt(summary, stats, rows)} />
+        <CoachPanel tips={buildTips(summary, stats, rows)} prompt={coachingPrompt(summary, stats, rows, MODES[mode])} />
       </section>
 
       <section>
@@ -170,10 +186,29 @@ function RankChip({ role, rank }: { role: string; rank: RankInfo }) {
   );
 }
 
-function Overview({ g }: { g: StatBlock }) {
+function ModeTabs({ mode }: { mode: Mode }) {
+  return (
+    <div className="mb-4 flex flex-wrap items-center gap-3">
+      <div className="flex gap-1 rounded-xl bg-surface p-1">
+        {(Object.keys(MODES) as Mode[]).map((m) => (
+          <Link
+            key={m}
+            href={m === "competitive" ? "?" : `?mode=${m}`}
+            className={`rounded-lg px-3 py-1.5 text-sm font-medium ${m === mode ? "bg-accent text-background" : "text-muted hover:text-foreground"}`}
+          >
+            {MODES[m]}
+          </Link>
+        ))}
+      </div>
+      <span className="text-xs text-muted">Only what Blizzard&apos;s public profile shares: recent play, not your full history.</span>
+    </div>
+  );
+}
+
+function Overview({ g, title }: { g: StatBlock; title: string }) {
   return (
     <section className="card p-5">
-      <h2 className="mb-4 font-semibold">Competitive overview</h2>
+      <h2 className="mb-4 font-semibold">{title}</h2>
       <div className="flex flex-wrap items-center gap-6">
         <Ring
           size={150}
@@ -345,7 +380,7 @@ function RoleCard({ label, rank, stats, letter, score }: { label: string; rank: 
 
 function Notice({ children }: { children: React.ReactNode }) {
   return (
-    <Shell active="Overwatch">
+    <Shell active="Coaching">
       <section className="card max-w-2xl p-6">
         <h1 className="mb-3 text-2xl font-semibold">Overwatch 2</h1>
         <p className="text-muted">{children}</p>

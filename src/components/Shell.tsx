@@ -8,9 +8,7 @@ type NavItem = { href: string; label: string; icon: keyof typeof ICONS; soon?: b
 
 const NAV: NavItem[] = [
   { href: "/", label: "Home", icon: "home" },
-  { href: "/games/overwatch", label: "Overwatch", icon: "target" },
-  { href: "#", label: "CS2", icon: "crosshair", soon: true },
-  { href: "#", label: "Siege", icon: "shield", soon: true },
+  { href: "/coaching", label: "Coaching", icon: "target" },
   { href: "#", label: "Friends", icon: "users", soon: true },
   { href: "#", label: "Deals", icon: "tag", soon: true },
 ];
@@ -18,8 +16,6 @@ const NAV: NavItem[] = [
 const ICONS = {
   home: "M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z",
   target: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-4a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0-4a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z",
-  crosshair: "M12 3v5M12 16v5M3 12h5M16 12h5M12 19a7 7 0 1 0 0-14 7 7 0 0 0 0 14Z",
-  shield: "M12 3 4 6v6c0 4.5 3.4 8.2 8 9 4.6-.8 8-4.5 8-9V6z",
   users: "M16 20v-1.5A3.5 3.5 0 0 0 12.5 15h-5A3.5 3.5 0 0 0 4 18.5V20M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm10 9v-1.5a3.5 3.5 0 0 0-2.5-3.35M15.5 3.15a4 4 0 0 1 0 7.7",
   tag: "M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9zM7.5 8.5h.01",
 };
@@ -45,7 +41,7 @@ export default async function Shell({ active, children }: { active: string; chil
 
   return (
     <div className="mx-auto flex min-h-screen max-w-[1400px] gap-4 p-3 md:p-5">
-      <aside className="card sticky top-5 hidden h-[calc(100vh-2.5rem)] w-[72px] shrink-0 flex-col items-center gap-2 py-5 md:flex">
+      <aside className="card sticky top-5 z-30 hidden h-[calc(100vh-2.5rem)] w-[72px] shrink-0 flex-col items-center gap-2 py-5 md:flex">
         <Link href="/" title="Home" className="mb-4 flex h-10 w-10 items-center justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.png" alt="" className="h-9 w-9" />
@@ -108,7 +104,7 @@ export default async function Shell({ active, children }: { active: string; chil
 function NavLink({ item, active }: { item: NavItem; active: boolean }) {
   const base = "group relative flex h-10 w-10 items-center justify-center rounded-xl transition-colors";
   const tip = (
-    <span className="pointer-events-none absolute left-12 z-10 whitespace-nowrap rounded-md bg-surface-2 px-2 py-1 text-xs opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+    <span className="pointer-events-none absolute left-12 z-50 whitespace-nowrap rounded-md border border-border bg-surface-2 px-2.5 py-1 text-xs font-medium text-foreground opacity-0 shadow-xl transition-opacity group-hover:opacity-100">
       {item.label}
       {item.soon && " (soon)"}
     </span>

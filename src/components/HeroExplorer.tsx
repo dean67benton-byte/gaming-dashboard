@@ -126,7 +126,7 @@ export default function HeroExplorer({ heroes, minGames }: { heroes: HeroCard[];
               })}
             </div>
           ) : (
-            <p className="relative text-sm text-muted">Play {minGames} or more competitive games on {hero.name} to get a grade.</p>
+            <p className="relative text-sm text-muted">Play {minGames} or more games on {hero.name} to get a grade.</p>
           )}
         </div>
       )}
