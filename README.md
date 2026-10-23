@@ -21,10 +21,15 @@ Open http://localhost:3000 and sign in through Steam.
 | `OVERWATCH_BATTLETAG` | Your BattleTag, e.g. `Name#1234`. Career profile must be public in game |
 | `KV_REST_API_URL`, `KV_REST_API_TOKEN` | Optional. Free Upstash Redis (Vercel → Storage → Upstash for Redis) for tracking and grading recent sessions. Added automatically when you connect it in Vercel |
 | `CRON_SECRET` | Optional. Protects the daily snapshot cron |
+| `STEAM_COUNTRY` | Optional. Two-letter store region for Deals prices, e.g. `GB`. Defaults to `US` |
 
 Without `STEAM_API_KEY` the app runs in demo mode automatically.
 
 Your Steam profile's **Game details** must be Public, or Steam returns no games. The Friends tab also needs your **Friends list** to be Public, and only compares libraries with friends whose game details are Public. Star a friend to pin them as a favorite; favorites are saved in Redis when it's connected (so they sync across devices), otherwise in a browser cookie.
+
+## Deals
+
+The Deals tab shows your Steam wishlist with current discounts (it follows your **Game details** privacy setting), sales and top sellers ranked against your taste, and Epic's weekly free games. Your taste is the Steam tags of your most played games, weighted by hours and recent play. Picks are ranked on how well their tags match it and on their reviews, with small review counts pulled toward average so a game needs a few hundred reviews to rank high. All of it uses Steam's and Epic's free public store endpoints; no extra keys.
 
 ## Grades
 
