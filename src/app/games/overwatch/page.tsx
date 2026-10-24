@@ -2,12 +2,14 @@ import Link from "next/link";
 import CoachPanel from "@/components/CoachPanel";
 import GradeBadge from "@/components/GradeBadge";
 import HeroExplorer, { type HeroCard } from "@/components/HeroExplorer";
+import ImportedStats from "@/components/ImportedStats";
 import Portrait from "@/components/Portrait";
 import RankEmblem from "@/components/RankEmblem";
 import Ring from "@/components/Ring";
 import Shell from "@/components/Shell";
 import { buildTips, coachingPrompt } from "@/lib/coach";
 import { grade } from "@/lib/grades";
+import { gradeMatches, heroLookup, imported, importedPromptLines, importedTips, mergeTips, seasonHeroRows } from "@/lib/ow-imported";
 import {
   formatRank,
   getHeroArt,
@@ -107,6 +109,11 @@ export default async function OverwatchPage({ searchParams }: { searchParams: Pr
   const topHero = heroCards.find((h) => h.grade) ?? heroCards[0];
   const portraits = Object.fromEntries(rows.map((r) => [r.key, r]));
   const pc = summary.competitive?.pc;
+  // Hand-imported in-game stats are all competitive, so they join the competitive view only.
+  const withImported = mode === "competitive";
+  const findHero = heroLookup(heroInfo);
+  const tips = buildTips(summary, stats, rows);
+  const prompt = coachingPrompt(summary, stats, rows, MODES[mode]);
 
   return (
     <Shell active="Coaching">
@@ -137,6 +144,16 @@ export default async function OverwatchPage({ searchParams }: { searchParams: Pr
 
       {mode === "competitive" && <Sessions sessions={sessions} enabled={trackingEnabled()} heroes={portraits} />}
 
+      {withImported && (
+        <ImportedStats
+          capturedAt={imported.capturedAt}
+          hoursByMode={imported.hoursByMode}
+          seasons={imported.seasons.map((s) => ({ ...s, rows: seasonHeroRows(s) }))}
+          matches={gradeMatches(stats, heroInfo)}
+          portraits={Object.fromEntries(importedHeroNames().map((n) => [n, findHero(n)?.portrait]))}
+        />
+      )}
+
       <section className="mb-4 grid gap-4 md:grid-cols-3">
         {ROLES.map((role) => {
           const s = stats.roles?.[role];
@@ -146,7 +163,10 @@ export default async function OverwatchPage({ searchParams }: { searchParams: Pr
       </section>
 
       <section className="mb-4">
-        <CoachPanel tips={buildTips(summary, stats, rows)} prompt={coachingPrompt(summary, stats, rows, MODES[mode])} />
+        <CoachPanel
+          tips={withImported ? mergeTips(tips, importedTips()) : tips}
+          prompt={withImported ? [prompt, ...importedPromptLines()].join("\n") : prompt}
+        />
       </section>
 
       <section>
@@ -155,10 +175,18 @@ export default async function OverwatchPage({ searchParams }: { searchParams: Pr
           <span className="text-xs text-muted">Grades: S A B C D F, where B is your normal</span>
         </div>
         <HeroExplorer heroes={heroCards} minGames={MIN_GAMES} />
-        <p className="mt-2 text-xs text-muted">Stats from your public career profile via OverFast, refreshed hourly.</p>
+        <p className="mt-2 text-xs text-muted">Stats from your public career profile via OverFast, refreshed hourly.{withImported && " Older seasons and match reports above are imported from your in-game screens."}</p>
       </section>
     </Shell>
   );
+}
+
+/** Every hero name in the imported seasons and match reports. */
+function importedHeroNames() {
+  const names = new Set<string>();
+  for (const s of imported.seasons) for (const list of Object.values(s.leaderboards)) Object.keys(list ?? {}).forEach((n) => names.add(n));
+  for (const m of imported.matches) m.heroes.forEach((h) => names.add(h.name));
+  return [...names];
 }
 
 function MapBackdrop({ map }: { map: OwMap | null }) {
