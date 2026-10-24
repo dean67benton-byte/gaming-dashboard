@@ -1,52 +1,460 @@
 {
   "source": "In-game career profile screenshots (Overview, Statistics, History), imported by hand",
-  "capturedAt": "2026-10-23",
+  "capturedAt": "2026-10-24",
   "player": "Atlas",
   "level": 197,
-  "hoursByMode": { "competitive": 52, "quickplay": 45, "arcade": 8, "stadium": 4, "gameBrowser": 3 },
+  "hoursByMode": {
+    "competitive": 52,
+    "quickplay": 45,
+    "arcade": 8,
+    "stadium": 4,
+    "gameBrowser": 3
+  },
   "seasons": [
     {
       "id": "current",
       "label": "Current season",
       "ranks": {
-        "tank": { "division": "gold", "tier": 4 },
-        "damage": { "division": "gold", "tier": 3 },
-        "support": { "division": "gold", "tier": 2 }
+        "tank": {
+          "division": "gold",
+          "tier": 4
+        },
+        "damage": {
+          "division": "gold",
+          "tier": 3
+        },
+        "support": {
+          "division": "gold",
+          "tier": 2
+        }
       },
       "seasonHigh": {
-        "tank": { "division": "gold", "tier": 4 },
-        "damage": { "division": "gold", "tier": 3 },
-        "support": { "division": "gold", "tier": 2 }
+        "tank": {
+          "division": "gold",
+          "tier": 4
+        },
+        "damage": {
+          "division": "gold",
+          "tier": 3
+        },
+        "support": {
+          "division": "gold",
+          "tier": 2
+        }
       },
-      "gamesWon": { "tank": 7, "damage": 14, "support": 12, "open": 0 },
+      "gamesWon": {
+        "tank": 7,
+        "damage": 14,
+        "support": 12,
+        "open": 0
+      },
       "leaderboards": {
-        "minutes": { "Vendetta": 240, "Mizuki": 58, "Ramattra": 53, "Doctrine": 53, "Echo": 49, "Mauga": 41, "Lifeweaver": 27, "Domina": 27, "Zenyatta": 22 },
-        "gamesWon": { "Vendetta": 11, "Ramattra": 3, "Doctrine": 3, "Mizuki": 3, "Domina": 2, "Echo": 2, "Moira": 1, "Mauga": 1, "Baptiste": 1 },
-        "winrate": { "Anran": 100, "Ashe": 100, "Brigitte": 100, "D.Va": 100, "Symmetra": 100, "Wrecking Ball": 100, "Domina": 94, "Sombra": 76, "Ramattra": 74 },
-        "accuracy": { "Winston": 100, "Ana": 52, "Sigma": 48, "Doctrine": 45, "Mei": 43, "Domina": 42, "Wrecking Ball": 36, "Ashe": 34, "Widowmaker": 32 },
-        "elimsPerLife": { "Domina": 7.0, "Ramattra": 3.21, "Mauga": 2.64, "D.Mon": 2.5, "Orisa": 2.4, "Doctrine": 2.32, "Anran": 2.27, "Moira": 2.2, "Echo": 2.14 },
-        "killStreakBest": { "Vendetta": 15, "Domina": 13, "Mauga": 12, "Ramattra": 11, "Doctrine": 10, "Echo": 9, "Zenyatta": 9, "D.Mon": 8, "Lifeweaver": 8 },
-        "multikillBest": { "Doctrine": 5, "Ramattra": 5, "Vendetta": 5, "Echo": 4, "Baptiste": 3, "Domina": 3, "Mauga": 3, "Mizuki": 3, "Moira": 3 },
-        "eliminations10": { "Domina": 26.28, "Ramattra": 23.62, "Mauga": 21.39, "D.Mon": 20.36, "Anran": 18.68, "Sombra": 18.62, "Echo": 18.24, "Vendetta": 18.2, "Brigitte": 17.35 },
-        "deaths10": { "Emre": 22.75, "Reinhardt": 14.87, "Ana": 14.17, "Ashe": 13.62, "Sigma": 13.05, "Sombra": 12.14, "Winston": 11.98, "Brigitte": 11.57, "Vendetta": 10.19 },
-        "finalBlows10": { "Vendetta": 11.98, "Ramattra": 10.39, "Mauga": 10.08, "Echo": 9.93, "Orisa": 8.28, "D.Va": 7.67, "Reinhardt": 7.43, "Freja": 7.22, "D.Mon": 7.13 },
-        "soloKills10": { "Ashe": 6.81, "Vendetta": 2.46, "Echo": 2.43, "Moira": 1.5, "D.Mon": 1.02, "Doctrine": 0.76, "Ramattra": 0.76, "Anran": 0.75, "Mauga": 0.74 },
-        "objectiveKills10": { "Domina": 13.14, "Mauga": 9.59, "Wuyang": 9.0, "Ramattra": 8.13, "Sombra": 8.1, "Anran": 7.47, "Moira": 6.48, "D.Mon": 6.11, "Doctrine": 6.08 },
-        "objectiveTime10": { "Domina": 169, "Sigma": 159, "Orisa": 148, "D.Mon": 143, "Lifeweaver": 135, "Wuyang": 134, "Ramattra": 128, "Brigitte": 115, "Moira": 114 },
-        "damage10": { "Bastion": 11974, "Reinhardt": 11309, "Mauga": 10894, "Sigma": 10211, "Orisa": 10204, "Domina": 10073, "Ramattra": 10017, "Torbjörn": 9335, "Anran": 8294 },
-        "healing10": { "Mizuki": 9047, "Doctrine": 8130, "Lifeweaver": 7447, "Wuyang": 6686, "Moira": 6469, "Sombra": 5766, "Jetpack Cat": 5503, "Zenyatta": 5476, "Kiriko": 5095 }
+        "minutes": {
+          "Vendetta": 240,
+          "Mizuki": 58,
+          "Ramattra": 53,
+          "Doctrine": 53,
+          "Echo": 49,
+          "Mauga": 41,
+          "Lifeweaver": 27,
+          "Domina": 27,
+          "Zenyatta": 22
+        },
+        "gamesWon": {
+          "Vendetta": 11,
+          "Ramattra": 3,
+          "Doctrine": 3,
+          "Mizuki": 3,
+          "Domina": 2,
+          "Echo": 2,
+          "Moira": 1,
+          "Mauga": 1,
+          "Baptiste": 1
+        },
+        "winrate": {
+          "Anran": 100,
+          "Ashe": 100,
+          "Brigitte": 100,
+          "D.Va": 100,
+          "Symmetra": 100,
+          "Wrecking Ball": 100,
+          "Domina": 94,
+          "Sombra": 76,
+          "Ramattra": 74
+        },
+        "accuracy": {
+          "Winston": 100,
+          "Ana": 52,
+          "Sigma": 48,
+          "Doctrine": 45,
+          "Mei": 43,
+          "Domina": 42,
+          "Wrecking Ball": 36,
+          "Ashe": 34,
+          "Widowmaker": 32
+        },
+        "elimsPerLife": {
+          "Domina": 7.0,
+          "Ramattra": 3.21,
+          "Mauga": 2.64,
+          "D.Mon": 2.5,
+          "Orisa": 2.4,
+          "Doctrine": 2.32,
+          "Anran": 2.27,
+          "Moira": 2.2,
+          "Echo": 2.14
+        },
+        "killStreakBest": {
+          "Vendetta": 15,
+          "Domina": 13,
+          "Mauga": 12,
+          "Ramattra": 11,
+          "Doctrine": 10,
+          "Echo": 9,
+          "Zenyatta": 9,
+          "D.Mon": 8,
+          "Lifeweaver": 8
+        },
+        "multikillBest": {
+          "Doctrine": 5,
+          "Ramattra": 5,
+          "Vendetta": 5,
+          "Echo": 4,
+          "Baptiste": 3,
+          "Domina": 3,
+          "Mauga": 3,
+          "Mizuki": 3,
+          "Moira": 3
+        },
+        "eliminations10": {
+          "Domina": 26.28,
+          "Ramattra": 23.62,
+          "Mauga": 21.39,
+          "D.Mon": 20.36,
+          "Anran": 18.68,
+          "Sombra": 18.62,
+          "Echo": 18.24,
+          "Vendetta": 18.2,
+          "Brigitte": 17.35
+        },
+        "deaths10": {
+          "Emre": 22.75,
+          "Reinhardt": 14.87,
+          "Ana": 14.17,
+          "Ashe": 13.62,
+          "Sigma": 13.05,
+          "Sombra": 12.14,
+          "Winston": 11.98,
+          "Brigitte": 11.57,
+          "Vendetta": 10.19
+        },
+        "finalBlows10": {
+          "Vendetta": 11.98,
+          "Ramattra": 10.39,
+          "Mauga": 10.08,
+          "Echo": 9.93,
+          "Orisa": 8.28,
+          "D.Va": 7.67,
+          "Reinhardt": 7.43,
+          "Freja": 7.22,
+          "D.Mon": 7.13
+        },
+        "soloKills10": {
+          "Ashe": 6.81,
+          "Vendetta": 2.46,
+          "Echo": 2.43,
+          "Moira": 1.5,
+          "D.Mon": 1.02,
+          "Doctrine": 0.76,
+          "Ramattra": 0.76,
+          "Anran": 0.75,
+          "Mauga": 0.74
+        },
+        "objectiveKills10": {
+          "Domina": 13.14,
+          "Mauga": 9.59,
+          "Wuyang": 9.0,
+          "Ramattra": 8.13,
+          "Sombra": 8.1,
+          "Anran": 7.47,
+          "Moira": 6.48,
+          "D.Mon": 6.11,
+          "Doctrine": 6.08
+        },
+        "objectiveTime10": {
+          "Domina": 169,
+          "Sigma": 159,
+          "Orisa": 148,
+          "D.Mon": 143,
+          "Lifeweaver": 135,
+          "Wuyang": 134,
+          "Ramattra": 128,
+          "Brigitte": 115,
+          "Moira": 114
+        },
+        "damage10": {
+          "Bastion": 11974,
+          "Reinhardt": 11309,
+          "Mauga": 10894,
+          "Sigma": 10211,
+          "Orisa": 10204,
+          "Domina": 10073,
+          "Ramattra": 10017,
+          "Torbjörn": 9335,
+          "Anran": 8294
+        },
+        "healing10": {
+          "Mizuki": 9047,
+          "Doctrine": 8130,
+          "Lifeweaver": 7447,
+          "Wuyang": 6686,
+          "Moira": 6469,
+          "Sombra": 5766,
+          "Jetpack Cat": 5503,
+          "Zenyatta": 5476,
+          "Kiriko": 5095
+        }
       },
       "heroDetail": {
         "Vendetta": {
-          "minutes": 240, "gamesPlayed": 20, "gamesWon": 11, "gamesLost": 8, "winrate": 58,
-          "eliminations": 459, "eliminations10": 18.2, "eliminationsBest": 36, "elimsPerLife": 1.79,
-          "assists": 29, "assists10": 1.15, "deaths": 257, "deaths10": 10.19,
-          "finalBlows": 302, "finalBlows10": 11.98, "soloKills": 62, "soloKills10": 2.46,
-          "damage": 196527, "damage10": 7793, "damageBest": 15310, "damagePerLife": 4299,
-          "healing": 6733, "healing10": 267, "objectiveKills": 122, "objectiveKills10": 4.84,
-          "objectiveTimeMinutes": 29, "killStreakBest": 15, "multikills": 17, "multikillBest": 5,
+          "minutes": 240,
+          "gamesPlayed": 20,
+          "gamesWon": 11,
+          "gamesLost": 8,
+          "winrate": 58,
+          "eliminations": 459,
+          "eliminations10": 18.2,
+          "eliminationsBest": 36,
+          "elimsPerLife": 1.79,
+          "assists": 29,
+          "assists10": 1.15,
+          "deaths": 257,
+          "deaths10": 10.19,
+          "finalBlows": 302,
+          "finalBlows10": 11.98,
+          "soloKills": 62,
+          "soloKills10": 2.46,
+          "damage": 196527,
+          "damage10": 7793,
+          "damageBest": 15310,
+          "damagePerLife": 4299,
+          "healing": 6733,
+          "healing10": 267,
+          "objectiveKills": 122,
+          "objectiveKills10": 4.84,
+          "objectiveTimeMinutes": 29,
+          "killStreakBest": 15,
+          "multikills": 17,
+          "multikillBest": 5,
           "onFireMinutes": 32,
-          "heroSpecific": { "Projected edge kills": "148 (5.87 / 10 min)", "Overhead critical hits": "best 52 (23.99 / 10 min)", "Sundering blade kills": "36 (1.43 / 10 min)", "Onslaught uptime": "48%" }
+          "heroSpecific": {
+            "Projected edge kills": "148 (5.87 / 10 min)",
+            "Overhead critical hits": "best 52 (23.99 / 10 min)",
+            "Sundering blade kills": "36 (1.43 / 10 min)",
+            "Onslaught uptime": "48%"
+          }
+        },
+        "Mizuki": {
+          "minutes": 58,
+          "gamesPlayed": 5,
+          "gamesWon": 3,
+          "gamesLost": 2,
+          "winrate": 54,
+          "eliminations": 71,
+          "eliminations10": 12.22,
+          "eliminationsBest": 19,
+          "elimsPerLife": 1.77,
+          "assists": 78,
+          "assists10": 13.42,
+          "deaths": 40,
+          "deaths10": 6.88,
+          "finalBlows": 13,
+          "finalBlows10": 2.24,
+          "soloKills": 1,
+          "soloKills10": 0.17,
+          "damage": 27237,
+          "damage10": 4687,
+          "damageBest": 7105,
+          "damagePerLife": 2132,
+          "healing": 52570,
+          "healing10": 9047,
+          "objectiveTimeMinutes": 9,
+          "objectiveKills": 24,
+          "objectiveKills10": 4.13,
+          "accuracy": 26,
+          "killStreakBest": 7,
+          "multikills": 1,
+          "multikillBest": 3,
+          "onFireMinutes": 8,
+          "heroSpecific": {
+            "Players saved": "40 (6.88 / 10 min)",
+            "Chain heal healing": "24,255 (4,174 / 10 min)",
+            "Remedial aura healing": "25,586 (4,403 / 10 min)",
+            "Binding chain accuracy": "54%",
+            "Average aura": "44% (best 61%)",
+            "Enemies hindered": "49 (8.43 / 10 min)"
+          }
+        },
+        "Ramattra": {
+          "minutes": 53,
+          "gamesPlayed": 4,
+          "gamesWon": 3,
+          "gamesLost": 1,
+          "winrate": 74,
+          "eliminations": 125,
+          "eliminations10": 23.62,
+          "eliminationsBest": 42,
+          "elimsPerLife": 3.21,
+          "assists": 24,
+          "assists10": 4.54,
+          "deaths": 39,
+          "deaths10": 7.37,
+          "finalBlows": 55,
+          "finalBlows10": 10.39,
+          "soloKills": 4,
+          "soloKills10": 0.76,
+          "damage": 53004,
+          "damage10": 10017,
+          "damageBest": 16883,
+          "damagePerLife": 3244,
+          "healing": 1192,
+          "healing10": 225,
+          "objectiveTimeMinutes": 11,
+          "objectiveKills": 43,
+          "objectiveKills10": 8.13,
+          "accuracy": 23,
+          "killStreakBest": 11,
+          "multikills": 7,
+          "multikillBest": 5,
+          "onFireMinutes": 9,
+          "heroSpecific": {
+            "Pummel accuracy": "43%",
+            "Pummel kills": "67 (12.66 / 10 min)",
+            "Ravenous vortex kills": "48 (9.07 / 10 min)",
+            "Annihilation kills": "34 (6.43 / 10 min)",
+            "Annihilation efficiency": "265",
+            "Critical hit accuracy": "12%"
+          }
+        },
+        "Doctrine": {
+          "minutes": 53,
+          "gamesPlayed": 5,
+          "gamesWon": 3,
+          "gamesLost": 2,
+          "winrate": 63,
+          "eliminations": 79,
+          "eliminations10": 15.0,
+          "eliminationsBest": 28,
+          "elimsPerLife": 2.32,
+          "assists": 77,
+          "assists10": 14.62,
+          "deaths": 34,
+          "deaths10": 6.46,
+          "finalBlows": 26,
+          "finalBlows10": 4.94,
+          "soloKills": 4,
+          "soloKills10": 0.76,
+          "damage": 28023,
+          "damage10": 5321,
+          "damageBest": 9549,
+          "damagePerLife": 2796,
+          "healing": 42815,
+          "healing10": 8130,
+          "objectiveTimeMinutes": 6,
+          "objectiveKills": 32,
+          "objectiveKills10": 6.08,
+          "accuracy": 45,
+          "killStreakBest": 10,
+          "multikills": 1,
+          "multikillBest": 5,
+          "onFireMinutes": 10,
+          "heroSpecific": {
+            "Players saved": "41 (7.79 / 10 min)",
+            "Infused sceptre damage": "5,318 (1,010 / 10 min)",
+            "Infused sceptre healing": "5,315 (1,009 / 10 min)",
+            "Deliverance overhealth": "4,305 (817 / 10 min)",
+            "Deliverance health capped": "5,369 (1,019 / 10 min)"
+          }
+        },
+        "Mauga": {
+          "minutes": 41,
+          "gamesPlayed": 4,
+          "gamesWon": 1,
+          "gamesLost": 3,
+          "winrate": 26,
+          "eliminations": 87,
+          "eliminations10": 21.39,
+          "eliminationsBest": 23,
+          "elimsPerLife": 2.64,
+          "assists": 27,
+          "assists10": 6.64,
+          "deaths": 33,
+          "deaths10": 8.11,
+          "finalBlows": 41,
+          "finalBlows10": 10.08,
+          "soloKills": 3,
+          "soloKills10": 0.74,
+          "damage": 44311,
+          "damage10": 10894,
+          "damageBest": 10532,
+          "damagePerLife": 4221,
+          "healing": 4950,
+          "healing10": 1217,
+          "objectiveTimeMinutes": 4,
+          "objectiveKills": 39,
+          "objectiveKills10": 9.59,
+          "accuracy": 28,
+          "killStreakBest": 12,
+          "multikills": 3,
+          "multikillBest": 3,
+          "onFireMinutes": 8,
+          "heroSpecific": {
+            "Overrun kills": "33 (8.11 / 10 min)",
+            "Cage fight kills": "10 (2.46 / 10 min)",
+            "Overhealth created": "7,877 (1,937 / 10 min)",
+            "Self healing": "4,127 (1,015 / 10 min)",
+            "Critical hit accuracy": "9%",
+            "Players protected": "15 (3.69 / 10 min)"
+          }
+        },
+        "Domina": {
+          "minutes": 27,
+          "gamesPlayed": 2,
+          "gamesWon": 2,
+          "gamesLost": 0,
+          "winrate": 94,
+          "eliminations": 70,
+          "eliminations10": 26.28,
+          "eliminationsBest": 31,
+          "elimsPerLife": 7.0,
+          "assists": 16,
+          "assists10": 6.01,
+          "deaths": 10,
+          "deaths10": 3.75,
+          "finalBlows": 18,
+          "finalBlows10": 6.76,
+          "damage": 26830,
+          "damage10": 10073,
+          "damageBest": 11012,
+          "damagePerLife": 4205,
+          "healing": 5249,
+          "healing10": 1971,
+          "objectiveTimeMinutes": 7,
+          "objectiveKills": 35,
+          "objectiveKills10": 13.14,
+          "accuracy": 42,
+          "killStreakBest": 13,
+          "multikills": 1,
+          "multikillBest": 3,
+          "onFireMinutes": 8,
+          "heroSpecific": {
+            "Players protected": "39 (14.64 / 10 min)",
+            "Self healing": "4,506 (1,692 / 10 min)",
+            "Knockback kills": "20 (7.51 / 10 min)",
+            "Panopticon hits": "6 (2.25 / 10 min)",
+            "Weapon shot accuracy": "44%",
+            "Weapon beam accuracy": "47%"
+          }
         }
       }
     },
@@ -54,46 +462,658 @@
       "id": "2026-s4",
       "label": "2026 Season 4",
       "ranks": {
-        "tank": { "division": "gold", "tier": 4 },
-        "damage": { "division": "gold", "tier": 4 },
-        "support": { "division": "gold", "tier": 3 }
+        "tank": {
+          "division": "gold",
+          "tier": 4
+        },
+        "damage": {
+          "division": "gold",
+          "tier": 4
+        },
+        "support": {
+          "division": "gold",
+          "tier": 3
+        }
       },
       "seasonHigh": {
-        "tank": { "division": "gold", "tier": 4 },
-        "damage": { "division": "gold", "tier": 4 },
-        "support": { "division": "gold", "tier": 2 }
+        "tank": {
+          "division": "gold",
+          "tier": 4
+        },
+        "damage": {
+          "division": "gold",
+          "tier": 4
+        },
+        "support": {
+          "division": "gold",
+          "tier": 2
+        }
       },
-      "gamesWon": { "tank": 16, "damage": 25, "support": 24, "open": 4 },
+      "gamesWon": {
+        "tank": 16,
+        "damage": 25,
+        "support": 24,
+        "open": 4
+      },
       "leaderboards": {
-        "minutes": { "Jetpack Cat": 240, "Mauga": 180, "Symmetra": 120, "Sierra": 120, "Soldier: 76": 120, "Domina": 60, "Bastion": 60, "Juno": 60, "Ashe": 60, "Sigma": 59, "Zenyatta": 51, "Mizuki": 46, "Widowmaker": 36, "Moira": 34, "Orisa": 32, "Kiriko": 25, "D.Mon": 21, "Reaper": 19 },
-        "gamesWon": { "Jetpack Cat": 14, "Mauga": 11, "Symmetra": 8, "Sierra": 4, "Bastion": 4, "Juno": 3, "Soldier: 76": 3, "Zenyatta": 3, "Mizuki": 3 },
-        "winrate": { "Widowmaker": 77, "Mauga": 73, "Zenyatta": 69, "Sojourn": 67, "Jetpack Cat": 65, "Symmetra": 62, "Juno": 58, "Mizuki": 58, "Bastion": 56 },
-        "accuracy": { "Ana": 45, "Domina": 43, "Winston": 43, "Sigma": 42, "Mei": 40, "Ashe": 39, "Pharah": 36, "Orisa": 35, "Juno": 34 },
-        "elimsPerLife": { "Ramattra": 4.14, "Mauga": 4.11, "Bastion": 3.51, "Orisa": 3.26, "Juno": 3.12, "Torbjörn": 3.0, "Sigma": 2.92, "Domina": 2.89, "Widowmaker": 2.73 },
-        "killStreakBest": { "Soldier: 76": 20, "Sigma": 17, "Symmetra": 17, "Widowmaker": 17, "Bastion": 16, "Mauga": 16, "Juno": 13, "Orisa": 13, "Ramattra": 13 },
-        "multikillBest": { "D.Mon": 4, "Jetpack Cat": 4, "Juno": 4, "Mauga": 4, "Moira": 4, "Sierra": 4, "Sigma": 4, "Soldier: 76": 4, "Symmetra": 4 },
-        "eliminations10": { "Ramattra": 28.07, "Mauga": 25.21, "Cassidy": 23.09, "Bastion": 22.6, "Winston": 21.05, "Widowmaker": 19.81, "Domina": 19.57, "Soldier: 76": 19.47, "Orisa": 19.35 },
-        "deaths10": { "D.Va": 22.72, "Hanzo": 21.14, "Sombra": 17.52, "Cassidy": 15.39, "Junkrat": 14.9, "Baptiste": 13.98, "Roadhog": 13.8, "Pharah": 13.57, "Anran": 12.41 },
-        "finalBlows10": { "Ramattra": 15.49, "Cassidy": 15.39, "Widowmaker": 11.16, "Soldier: 76": 10.01, "Bastion": 9.72, "Reaper": 9.32, "Mauga": 9.25, "Sierra": 8.73, "Echo": 8.63 },
-        "soloKills10": { "Torbjörn": 4.26, "Echo": 3.24, "Sierra": 2.57, "Widowmaker": 2.51, "Soldier: 76": 2.28, "Winston": 1.75, "Ashe": 1.69, "Junkrat": 1.49, "Reinhardt": 1.31 },
-        "objectiveKills10": { "Ramattra": 10.65, "Mauga": 10.29, "Bastion": 10.25, "Orisa": 9.67, "Domina": 9.59, "Torbjörn": 8.52, "D.Mon": 8.42, "Junker Queen": 8.27, "Cassidy": 7.7 },
-        "objectiveTime10": { "Junker Queen": 164, "Orisa": 158, "Domina": 156, "Reinhardt": 141, "Bastion": 110, "Ramattra": 110, "Mauga": 101, "Moira": 101, "D.Mon": 99 },
-        "damage10": { "Bastion": 12368, "Ramattra": 11317, "Orisa": 11290, "Mauga": 10783, "Domina": 10686, "Sigma": 10257, "Cassidy": 9835, "Soldier: 76": 9561, "Ashe": 9466 },
-        "healing10": { "Mizuki": 10514, "Mercy": 9172, "Lúcio": 8769, "Moira": 8654, "Jetpack Cat": 7677, "Juno": 7224, "Kiriko": 6845, "Zenyatta": 5306, "Roadhog": 4779 }
+        "minutes": {
+          "Jetpack Cat": 240,
+          "Mauga": 180,
+          "Symmetra": 120,
+          "Sierra": 120,
+          "Soldier: 76": 120,
+          "Domina": 60,
+          "Bastion": 60,
+          "Juno": 60,
+          "Ashe": 60,
+          "Sigma": 59,
+          "Zenyatta": 51,
+          "Mizuki": 46,
+          "Widowmaker": 36,
+          "Moira": 34,
+          "Orisa": 32,
+          "Kiriko": 25,
+          "D.Mon": 21,
+          "Reaper": 19
+        },
+        "gamesWon": {
+          "Jetpack Cat": 14,
+          "Mauga": 11,
+          "Symmetra": 8,
+          "Sierra": 4,
+          "Bastion": 4,
+          "Juno": 3,
+          "Soldier: 76": 3,
+          "Zenyatta": 3,
+          "Mizuki": 3
+        },
+        "winrate": {
+          "Widowmaker": 77,
+          "Mauga": 73,
+          "Zenyatta": 69,
+          "Sojourn": 67,
+          "Jetpack Cat": 65,
+          "Symmetra": 62,
+          "Juno": 58,
+          "Mizuki": 58,
+          "Bastion": 56
+        },
+        "accuracy": {
+          "Ana": 45,
+          "Domina": 43,
+          "Winston": 43,
+          "Sigma": 42,
+          "Mei": 40,
+          "Ashe": 39,
+          "Pharah": 36,
+          "Orisa": 35,
+          "Juno": 34
+        },
+        "elimsPerLife": {
+          "Ramattra": 4.14,
+          "Mauga": 4.11,
+          "Bastion": 3.51,
+          "Orisa": 3.26,
+          "Juno": 3.12,
+          "Torbjörn": 3.0,
+          "Sigma": 2.92,
+          "Domina": 2.89,
+          "Widowmaker": 2.73
+        },
+        "killStreakBest": {
+          "Soldier: 76": 20,
+          "Sigma": 17,
+          "Symmetra": 17,
+          "Widowmaker": 17,
+          "Bastion": 16,
+          "Mauga": 16,
+          "Juno": 13,
+          "Orisa": 13,
+          "Ramattra": 13
+        },
+        "multikillBest": {
+          "D.Mon": 4,
+          "Jetpack Cat": 4,
+          "Juno": 4,
+          "Mauga": 4,
+          "Moira": 4,
+          "Sierra": 4,
+          "Sigma": 4,
+          "Soldier: 76": 4,
+          "Symmetra": 4
+        },
+        "eliminations10": {
+          "Ramattra": 28.07,
+          "Mauga": 25.21,
+          "Cassidy": 23.09,
+          "Bastion": 22.6,
+          "Winston": 21.05,
+          "Widowmaker": 19.81,
+          "Domina": 19.57,
+          "Soldier: 76": 19.47,
+          "Orisa": 19.35
+        },
+        "deaths10": {
+          "D.Va": 22.72,
+          "Hanzo": 21.14,
+          "Sombra": 17.52,
+          "Cassidy": 15.39,
+          "Junkrat": 14.9,
+          "Baptiste": 13.98,
+          "Roadhog": 13.8,
+          "Pharah": 13.57,
+          "Anran": 12.41
+        },
+        "finalBlows10": {
+          "Ramattra": 15.49,
+          "Cassidy": 15.39,
+          "Widowmaker": 11.16,
+          "Soldier: 76": 10.01,
+          "Bastion": 9.72,
+          "Reaper": 9.32,
+          "Mauga": 9.25,
+          "Sierra": 8.73,
+          "Echo": 8.63
+        },
+        "soloKills10": {
+          "Torbjörn": 4.26,
+          "Echo": 3.24,
+          "Sierra": 2.57,
+          "Widowmaker": 2.51,
+          "Soldier: 76": 2.28,
+          "Winston": 1.75,
+          "Ashe": 1.69,
+          "Junkrat": 1.49,
+          "Reinhardt": 1.31
+        },
+        "objectiveKills10": {
+          "Ramattra": 10.65,
+          "Mauga": 10.29,
+          "Bastion": 10.25,
+          "Orisa": 9.67,
+          "Domina": 9.59,
+          "Torbjörn": 8.52,
+          "D.Mon": 8.42,
+          "Junker Queen": 8.27,
+          "Cassidy": 7.7
+        },
+        "objectiveTime10": {
+          "Junker Queen": 164,
+          "Orisa": 158,
+          "Domina": 156,
+          "Reinhardt": 141,
+          "Bastion": 110,
+          "Ramattra": 110,
+          "Mauga": 101,
+          "Moira": 101,
+          "D.Mon": 99
+        },
+        "damage10": {
+          "Bastion": 12368,
+          "Ramattra": 11317,
+          "Orisa": 11290,
+          "Mauga": 10783,
+          "Domina": 10686,
+          "Sigma": 10257,
+          "Cassidy": 9835,
+          "Soldier: 76": 9561,
+          "Ashe": 9466
+        },
+        "healing10": {
+          "Mizuki": 10514,
+          "Mercy": 9172,
+          "Lúcio": 8769,
+          "Moira": 8654,
+          "Jetpack Cat": 7677,
+          "Juno": 7224,
+          "Kiriko": 6845,
+          "Zenyatta": 5306,
+          "Roadhog": 4779
+        }
       },
-      "heroDetail": {}
+      "heroDetail": {
+        "Jetpack Cat": {
+          "minutes": 240,
+          "gamesPlayed": 21,
+          "gamesWon": 14,
+          "gamesLost": 7,
+          "winrate": 65,
+          "eliminations": 346,
+          "eliminations10": 14.94,
+          "eliminationsBest": 29,
+          "elimsPerLife": 2.37,
+          "assists": 321,
+          "assists10": 13.86,
+          "deaths": 146,
+          "deaths10": 6.3,
+          "finalBlows": 109,
+          "finalBlows10": 4.71,
+          "soloKills": 26,
+          "soloKills10": 1.12,
+          "damage": 74155,
+          "damage10": 3202,
+          "damageBest": 5763,
+          "damagePerLife": 1766,
+          "healing": 177771,
+          "healing10": 7677,
+          "objectiveTimeMinutes": 19,
+          "objectiveKills": 110,
+          "objectiveKills10": 4.75,
+          "accuracy": 29,
+          "killStreakBest": 10,
+          "multikills": 4,
+          "multikillBest": 4,
+          "onFireMinutes": 29,
+          "heroSpecific": {
+            "Players saved": "131 (5.66 / 10 min)",
+            "Defensive assists": "350 (15.11 / 10 min)",
+            "Knockback kills": "57 (2.46 / 10 min)",
+            "Environmental kills": "14",
+            "Melee final blows": "28 (1.21 / 10 min)",
+            "Lifeline healing": "44 / 10 min",
+            "Purr healing": "2,850 / 10 min",
+            "Critical hit accuracy": "6%"
+          }
+        },
+        "Mauga": {
+          "minutes": 180,
+          "gamesPlayed": 16,
+          "gamesWon": 11,
+          "gamesLost": 4,
+          "winrate": 73,
+          "eliminations": 436,
+          "eliminations10": 25.21,
+          "eliminationsBest": 46,
+          "elimsPerLife": 4.11,
+          "assists": 147,
+          "assists10": 8.5,
+          "deaths": 106,
+          "deaths10": 6.13,
+          "finalBlows": 160,
+          "finalBlows10": 9.25,
+          "soloKills": 10,
+          "soloKills10": 0.58,
+          "damage": 186485,
+          "damage10": 10783,
+          "damageBest": 21225,
+          "damagePerLife": 5497,
+          "healing": 23904,
+          "healing10": 1382,
+          "objectiveTimeMinutes": 29,
+          "objectiveKills": 178,
+          "objectiveKills10": 10.29,
+          "accuracy": 30,
+          "killStreakBest": 16,
+          "multikills": 15,
+          "multikillBest": 4,
+          "onFireMinutes": 36,
+          "heroSpecific": {
+            "Self healing": "18,677 (1,080 / 10 min)",
+            "Overhealth created": "30,514 (1,764 / 10 min)",
+            "Overrun kills": "150 (8.67 / 10 min)",
+            "Cage fight kills": "30 (1.73 / 10 min)",
+            "Critical hit damage": "65,884 (3,810 / 10 min)",
+            "Critical hit accuracy": "11%",
+            "Players protected": "39 (2.26 / 10 min)"
+          }
+        },
+        "Symmetra": {
+          "minutes": 120,
+          "gamesPlayed": 12,
+          "gamesWon": 8,
+          "gamesLost": 5,
+          "winrate": 62,
+          "eliminations": 232,
+          "eliminations10": 17.32,
+          "eliminationsBest": 33,
+          "elimsPerLife": 2.55,
+          "assists": 91,
+          "assists10": 6.79,
+          "deaths": 91,
+          "deaths10": 6.79,
+          "finalBlows": 89,
+          "finalBlows10": 6.64,
+          "soloKills": 9,
+          "soloKills10": 0.67,
+          "damage": 92225,
+          "damage10": 6886,
+          "damageBest": 12781,
+          "damagePerLife": 5065,
+          "healing": 2961,
+          "healing10": 221,
+          "objectiveTimeMinutes": 13,
+          "objectiveKills": 79,
+          "objectiveKills10": 5.9,
+          "accuracy": 31,
+          "killStreakBest": 17,
+          "multikills": 9,
+          "multikillBest": 4,
+          "onFireMinutes": 19,
+          "heroSpecific": {
+            "Sentry turret kills": "138 (10.30 / 10 min)",
+            "Players teleported": "304 (22.70 / 10 min)",
+            "Secondary direct hits": "507 (37.85 / 10 min)",
+            "Average damage multiplier": "1.59",
+            "Primary fire accuracy": "32%",
+            "Secondary fire accuracy": "31%",
+            "Players protected": "12 (0.90 / 10 min)"
+          }
+        },
+        "Sierra": {
+          "minutes": 120,
+          "gamesPlayed": 9,
+          "gamesWon": 4,
+          "gamesLost": 5,
+          "winrate": 46,
+          "eliminations": 165,
+          "eliminations10": 16.95,
+          "eliminationsBest": 40,
+          "elimsPerLife": 2.04,
+          "assists": 4,
+          "assists10": 0.41,
+          "deaths": 81,
+          "deaths10": 8.32,
+          "finalBlows": 85,
+          "finalBlows10": 8.73,
+          "soloKills": 25,
+          "soloKills10": 2.57,
+          "damage": 81400,
+          "damage10": 8360,
+          "damageBest": 15146,
+          "damagePerLife": 3881,
+          "healing": 974,
+          "healing10": 100,
+          "objectiveTimeMinutes": 7,
+          "objectiveKills": 47,
+          "objectiveKills10": 4.83,
+          "accuracy": 20,
+          "killStreakBest": 12,
+          "heroSpecific": {
+            "Critical hit accuracy": "10%",
+            "Critical hits": "806 (82.78 / 10 min)",
+            "Critical hit kills": "9 (0.92 / 10 min)",
+            "Melee final blows": "2"
+          }
+        }
+      }
     }
   ],
   "matches": [
-    { "map": "Midtown", "date": "2026-10-23T00:16", "mode": "Hybrid", "length": "21:18", "result": "win", "score": "5-4", "heroes": [{ "name": "Mizuki", "share": 60, "time": "10:16" }, { "name": "Juno", "share": 22, "time": "3:50" }, { "name": "Brigitte", "share": 10, "time": "1:43" }], "eliminations": 20, "assists": 28, "deaths": 14, "per10": { "eliminations": 11.68, "assists": 16.35, "deaths": 8.18 } },
-    { "map": "Grimsvötn", "date": "2026-10-22T23:49", "mode": "Escort", "length": "12:45", "result": "win", "score": "2-1", "heroes": [{ "name": "Mizuki", "share": 76, "time": "8:35" }, { "name": "Lifeweaver", "share": 14, "time": "1:31" }, { "name": "Ana", "share": 5, "time": "0:37" }], "eliminations": 19, "assists": 19, "deaths": 5, "per10": { "eliminations": 16.81, "assists": 16.81, "deaths": 4.42 } },
-    { "map": "Blizzard World", "date": "2026-10-22T22:48", "mode": "Hybrid", "length": "14:11", "result": "loss", "score": "1-3", "heroes": [{ "name": "Doctrine", "share": 49, "time": "6:14" }, { "name": "Sombra", "share": 22, "time": "2:51" }, { "name": "Kiriko", "share": 13, "time": "1:42" }], "eliminations": 12, "assists": 10, "deaths": 14, "per10": { "eliminations": 9.42, "assists": 7.85, "deaths": 10.99 } },
-    { "map": "Shambali Monastery", "date": "2026-10-22", "mode": "Escort", "length": "13:03", "result": "loss", "score": "1-2", "heroes": [] },
-    { "map": "King's Row", "date": "2026-10-22T22:09", "mode": "Hybrid", "length": "10:33", "result": "win", "score": "2-1", "heroes": [{ "name": "Vendetta", "share": 100, "time": "9:05" }], "eliminations": 19, "assists": 1, "deaths": 5, "per10": { "eliminations": 20.89, "assists": 1.1, "deaths": 5.5 } },
-    { "map": "Nepal", "date": "2026-10-22T21:55", "mode": "Control", "length": "8:06", "result": "win", "score": "2-0", "heroes": [{ "name": "Moira", "share": 100, "time": "7:25" }], "eliminations": 13, "assists": 11, "deaths": 6, "per10": { "eliminations": 17.53, "assists": 14.83, "deaths": 8.09 } },
-    { "map": "New Junk City", "date": "2026-10-22T21:43", "mode": "Flashpoint", "length": "7:32", "result": "win", "score": "3-0", "heroes": [{ "name": "Baptiste", "share": 100, "time": "7:31" }], "eliminations": 11, "assists": 7, "deaths": 4, "per10": { "eliminations": 14.62, "assists": 9.3, "deaths": 5.32 } },
-    { "map": "Circuit Royal", "date": "2026-10-22T21:30", "mode": "Escort", "length": "14:19", "result": "win", "score": "3-2", "heroes": [{ "name": "Mauga", "share": 60, "time": "7:45" }, { "name": "Domina", "share": 34, "time": "4:22" }, { "name": "Reinhardt", "share": 6, "time": "0:44" }], "eliminations": 32, "assists": 7, "deaths": 7, "per10": { "eliminations": 24.88, "assists": 5.44, "deaths": 5.44 } },
-    { "map": "Numbani", "date": "2026-10-21T16:37", "mode": "Hybrid", "length": "21:21", "result": "loss", "score": "3-4", "heroes": [{ "name": "Zenyatta", "share": 74, "time": "12:45" }, { "name": "Jetpack Cat", "share": 20, "time": "3:25" }, { "name": "Juno", "share": 6, "time": "0:59" }], "eliminations": 20, "assists": 18, "deaths": 17, "per10": { "eliminations": 11.64, "assists": 10.48, "deaths": 9.89 } },
-    { "map": "Shambali Monastery", "date": "2026-10-21T15:45", "mode": "Escort", "length": "10:36", "result": "loss", "score": "1-2", "heroes": [{ "name": "Kiriko", "share": 57, "time": "5:12" }, { "name": "Juno", "share": 27, "time": "2:26" }, { "name": "Ana", "share": 16, "time": "1:29" }], "eliminations": 5, "assists": 5, "deaths": 8, "per10": { "eliminations": 5.47, "assists": 5.47, "deaths": 8.75 } }
+    {
+      "map": "Midtown",
+      "date": "2026-10-23T00:16",
+      "mode": "Hybrid",
+      "length": "21:18",
+      "result": "win",
+      "score": "5-4",
+      "heroes": [
+        {
+          "name": "Mizuki",
+          "share": 60,
+          "time": "10:16"
+        },
+        {
+          "name": "Juno",
+          "share": 22,
+          "time": "3:50"
+        },
+        {
+          "name": "Brigitte",
+          "share": 10,
+          "time": "1:43"
+        }
+      ],
+      "eliminations": 20,
+      "assists": 28,
+      "deaths": 14,
+      "per10": {
+        "eliminations": 11.68,
+        "assists": 16.35,
+        "deaths": 8.18
+      }
+    },
+    {
+      "map": "Grimsvötn",
+      "date": "2026-10-22T23:49",
+      "mode": "Escort",
+      "length": "12:45",
+      "result": "win",
+      "score": "2-1",
+      "heroes": [
+        {
+          "name": "Mizuki",
+          "share": 76,
+          "time": "8:35"
+        },
+        {
+          "name": "Lifeweaver",
+          "share": 14,
+          "time": "1:31"
+        },
+        {
+          "name": "Ana",
+          "share": 5,
+          "time": "0:37"
+        }
+      ],
+      "eliminations": 19,
+      "assists": 19,
+      "deaths": 5,
+      "per10": {
+        "eliminations": 16.81,
+        "assists": 16.81,
+        "deaths": 4.42
+      }
+    },
+    {
+      "map": "Blizzard World",
+      "date": "2026-10-22T22:48",
+      "mode": "Hybrid",
+      "length": "14:11",
+      "result": "loss",
+      "score": "1-3",
+      "heroes": [
+        {
+          "name": "Doctrine",
+          "share": 49,
+          "time": "6:14"
+        },
+        {
+          "name": "Sombra",
+          "share": 22,
+          "time": "2:51"
+        },
+        {
+          "name": "Kiriko",
+          "share": 13,
+          "time": "1:42"
+        }
+      ],
+      "eliminations": 12,
+      "assists": 10,
+      "deaths": 14,
+      "per10": {
+        "eliminations": 9.42,
+        "assists": 7.85,
+        "deaths": 10.99
+      }
+    },
+    {
+      "map": "Shambali Monastery",
+      "date": "2026-10-22",
+      "mode": "Escort",
+      "length": "13:03",
+      "result": "loss",
+      "score": "1-2",
+      "heroes": []
+    },
+    {
+      "map": "King's Row",
+      "date": "2026-10-22T22:09",
+      "mode": "Hybrid",
+      "length": "10:33",
+      "result": "win",
+      "score": "2-1",
+      "heroes": [
+        {
+          "name": "Vendetta",
+          "share": 100,
+          "time": "9:05"
+        }
+      ],
+      "eliminations": 19,
+      "assists": 1,
+      "deaths": 5,
+      "per10": {
+        "eliminations": 20.89,
+        "assists": 1.1,
+        "deaths": 5.5
+      }
+    },
+    {
+      "map": "Nepal",
+      "date": "2026-10-22T21:55",
+      "mode": "Control",
+      "length": "8:06",
+      "result": "win",
+      "score": "2-0",
+      "heroes": [
+        {
+          "name": "Moira",
+          "share": 100,
+          "time": "7:25"
+        }
+      ],
+      "eliminations": 13,
+      "assists": 11,
+      "deaths": 6,
+      "per10": {
+        "eliminations": 17.53,
+        "assists": 14.83,
+        "deaths": 8.09
+      }
+    },
+    {
+      "map": "New Junk City",
+      "date": "2026-10-22T21:43",
+      "mode": "Flashpoint",
+      "length": "7:32",
+      "result": "win",
+      "score": "3-0",
+      "heroes": [
+        {
+          "name": "Baptiste",
+          "share": 100,
+          "time": "7:31"
+        }
+      ],
+      "eliminations": 11,
+      "assists": 7,
+      "deaths": 4,
+      "per10": {
+        "eliminations": 14.62,
+        "assists": 9.3,
+        "deaths": 5.32
+      }
+    },
+    {
+      "map": "Circuit Royal",
+      "date": "2026-10-22T21:30",
+      "mode": "Escort",
+      "length": "14:19",
+      "result": "win",
+      "score": "3-2",
+      "heroes": [
+        {
+          "name": "Mauga",
+          "share": 60,
+          "time": "7:45"
+        },
+        {
+          "name": "Domina",
+          "share": 34,
+          "time": "4:22"
+        },
+        {
+          "name": "Reinhardt",
+          "share": 6,
+          "time": "0:44"
+        }
+      ],
+      "eliminations": 32,
+      "assists": 7,
+      "deaths": 7,
+      "per10": {
+        "eliminations": 24.88,
+        "assists": 5.44,
+        "deaths": 5.44
+      }
+    },
+    {
+      "map": "Numbani",
+      "date": "2026-10-21T16:37",
+      "mode": "Hybrid",
+      "length": "21:21",
+      "result": "loss",
+      "score": "3-4",
+      "heroes": [
+        {
+          "name": "Zenyatta",
+          "share": 74,
+          "time": "12:45"
+        },
+        {
+          "name": "Jetpack Cat",
+          "share": 20,
+          "time": "3:25"
+        },
+        {
+          "name": "Juno",
+          "share": 6,
+          "time": "0:59"
+        }
+      ],
+      "eliminations": 20,
+      "assists": 18,
+      "deaths": 17,
+      "per10": {
+        "eliminations": 11.64,
+        "assists": 10.48,
+        "deaths": 9.89
+      }
+    },
+    {
+      "map": "Shambali Monastery",
+      "date": "2026-10-21T15:45",
+      "mode": "Escort",
+      "length": "10:36",
+      "result": "loss",
+      "score": "1-2",
+      "heroes": [
+        {
+          "name": "Kiriko",
+          "share": 57,
+          "time": "5:12"
+        },
+        {
+          "name": "Juno",
+          "share": 27,
+          "time": "2:26"
+        },
+        {
+          "name": "Ana",
+          "share": 16,
+          "time": "1:29"
+        }
+      ],
+      "eliminations": 5,
+      "assists": 5,
+      "deaths": 8,
+      "per10": {
+        "eliminations": 5.47,
+        "assists": 5.47,
+        "deaths": 8.75
+      }
+    }
   ]
 }

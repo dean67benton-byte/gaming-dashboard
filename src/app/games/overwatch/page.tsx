@@ -9,7 +9,7 @@ import Ring from "@/components/Ring";
 import Shell from "@/components/Shell";
 import { buildTips, coachingPrompt } from "@/lib/coach";
 import { grade } from "@/lib/grades";
-import { gradeMatches, heroLookup, imported, importedPromptLines, importedTips, mergeTips, seasonHeroRows } from "@/lib/ow-imported";
+import { gradeMatches, gradeSheets, heroLookup, imported, importedPromptLines, importedTips, mergeTips, seasonHeroRows } from "@/lib/ow-imported";
 import {
   formatRank,
   getHeroArt,
@@ -148,7 +148,7 @@ export default async function OverwatchPage({ searchParams }: { searchParams: Pr
         <ImportedStats
           capturedAt={imported.capturedAt}
           hoursByMode={imported.hoursByMode}
-          seasons={imported.seasons.map((s) => ({ ...s, rows: seasonHeroRows(s) }))}
+          seasons={imported.seasons.map((s) => ({ ...s, rows: gradeSheets(seasonHeroRows(s), stats, heroInfo) }))}
           matches={gradeMatches(stats, heroInfo)}
           portraits={Object.fromEntries(importedHeroNames().map((n) => [n, findHero(n)?.portrait]))}
         />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import GradeBadge from "@/components/GradeBadge";
 import Portrait from "@/components/Portrait";
 import RankEmblem from "@/components/RankEmblem";
@@ -9,9 +9,9 @@ import { formatRank, ROLES } from "@/lib/overwatch";
 
 const ROLE_LABEL = { tank: "Tank", damage: "Damage", support: "Support" } as const;
 
-const COLUMNS: { key: Metric | "gamesPlayed"; label: string; fmt?: (v: number) => string }[] = [
+const COLUMNS: { key: Metric | "gamesPlayed"; label: string; fmt?: (v: number, row: ImportedHeroRow) => string }[] = [
   { key: "minutes", label: "Time", fmt: (v) => (v >= 60 ? `${Math.round(v / 60)} h` : `${v} m`) },
-  { key: "gamesPlayed", label: "Games", fmt: (v) => `~${v}` },
+  { key: "gamesPlayed", label: "Games", fmt: (v, row) => (row.sheet ? `${v}` : `~${v}`) },
   { key: "winrate", label: "Win", fmt: (v) => `${v}%` },
   { key: "eliminations10", label: "Elims/10" },
   { key: "deaths10", label: "Deaths/10" },
@@ -34,10 +34,13 @@ export default function ImportedStats({ capturedAt, hoursByMode, seasons, matche
   const [seasonId, setSeasonId] = useState(seasons[0]?.id);
   const season = seasons.find((s) => s.id === seasonId) ?? seasons[0];
   const [showAll, setShowAll] = useState(false);
+  const [open, setOpen] = useState<string | null>(null);
   const won = matches.filter((m) => m.result === "win").length;
   // Heroes that only show up in one stat list are noise until asked for.
-  const core = season?.rows.filter((r) => r.minutes !== undefined || r.gamesWon !== undefined || r.winrate !== undefined) ?? [];
-  const rows = showAll ? season?.rows ?? [] : core;
+  // Heroes with a full stat sheet come first; they're the ones that can be graded.
+  const sorted = [...(season?.rows ?? [])].sort((a, b) => Number(!!b.sheet) - Number(!!a.sheet));
+  const core = sorted.filter((r) => r.sheet || r.minutes !== undefined || r.gamesWon !== undefined || r.winrate !== undefined);
+  const rows = showAll ? sorted : core;
 
   return (
     <section className="mb-4 space-y-4">
@@ -140,6 +143,7 @@ export default function ImportedStats({ capturedAt, hoursByMode, seasons, matche
             <thead>
               <tr className="border-y border-border text-left text-[11px] uppercase tracking-wide text-muted">
                 <th className="px-4 py-2 font-medium">Hero</th>
+                <th className="px-2 py-2 text-center font-medium">Grade</th>
                 {COLUMNS.map((c) => (
                   <th key={c.key} className="px-2 py-2 text-right font-medium">
                     {c.label}
@@ -148,24 +152,46 @@ export default function ImportedStats({ capturedAt, hoursByMode, seasons, matche
               </tr>
             </thead>
             <tbody>
-              {rows.map((row) => (
-                <tr key={row.name} className="border-b border-border/60 last:border-0">
-                  <td className="px-4 py-2">
-                    <span className="flex items-center gap-2">
-                      <Portrait src={portraits[row.name]} name={row.name} className="h-7 w-7 rounded-lg text-[9px]" />
-                      {row.name}
-                    </span>
-                  </td>
-                  {COLUMNS.map((c) => {
-                    const v = row[c.key];
-                    return (
-                      <td key={c.key} className="px-2 py-2 text-right tabular-nums">
-                        {v === undefined ? <span className="text-muted/50">–</span> : c.fmt ? c.fmt(v) : v.toFixed(2)}
+              {rows.map((row) => {
+                const expanded = open === row.name && row.sheet;
+                return (
+                  <Fragment key={row.name}>
+                    <tr
+                      onClick={() => row.sheet && setOpen(expanded ? null : row.name)}
+                      className={`border-b border-border/60 last:border-0 ${row.sheet ? "cursor-pointer hover:bg-surface-2/60" : ""} ${expanded ? "bg-surface-2/60" : ""}`}
+                    >
+                      <td className="px-4 py-2">
+                        <span className="flex items-center gap-2">
+                          <Portrait src={portraits[row.name]} name={row.name} className="h-7 w-7 rounded-lg text-[9px]" />
+                          {row.name}
+                          {row.sheet && <span className="text-xs text-muted">{expanded ? "▾" : "▸"}</span>}
+                        </span>
                       </td>
-                    );
-                  })}
-                </tr>
-              ))}
+                      <td className="px-2 py-2 text-center">
+                        {row.sheet ? <GradeBadge letter={row.grade?.letter ?? null} score={row.grade?.score} size="sm" /> : <span className="text-muted/50">–</span>}
+                      </td>
+                      {COLUMNS.map((c) => {
+                        const v = row[c.key];
+                        return (
+                          <td key={c.key} className="whitespace-nowrap px-2 py-2 text-right tabular-nums">
+                            {v === undefined ? <span className="text-muted/50">–</span> : c.fmt ? c.fmt(v, row) : v.toFixed(2)}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                    {expanded && (
+                      <tr className="border-b border-border/60 bg-surface-2/30">
+                        <td colSpan={COLUMNS.length + 2} className="px-4 py-3">
+                          {/* Stays in view while the wide table scrolls sideways on a phone. */}
+                          <div className="sticky left-4 max-w-[calc(100vw-5rem)] lg:max-w-none">
+                            <SheetDetail row={row} />
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -175,8 +201,9 @@ export default function ImportedStats({ capturedAt, hoursByMode, seasons, matche
           </button>
         )}
         <p className="p-4 text-xs text-muted">
-          The game only lists your top 9 heroes for each stat, so a dash means &quot;not in the top 9&quot;. Games are worked out
-          from wins and win rate. Hours by mode overall:{" "}
+          Heroes with a grade have a full stat sheet: tap one to see everything, graded against your usual numbers for that
+          role. For the rest, the game only lists your top 9 heroes per stat, so a dash means &quot;not in the top 9&quot; and
+          games marked ~ are worked out from wins and win rate. Hours by mode overall:{" "}
           {Object.entries(hoursByMode)
             .map(([m, h]) => `${MODE_LABEL[m] ?? m} ${h} h`)
             .join(", ")}
@@ -186,6 +213,63 @@ export default function ImportedStats({ capturedAt, hoursByMode, seasons, matche
     </section>
   );
 }
+
+function SheetDetail({ row }: { row: ImportedHeroRow }) {
+  const s = row.sheet!;
+  const n = (v: number | undefined, digits = 0) => (v === undefined ? "–" : v.toLocaleString("en-US", { maximumFractionDigits: digits }));
+  const stats: [string, string][] = [
+    ["Record", `${s.gamesWon ?? 0}W ${s.gamesLost}L`],
+    ["Elims per life", n(s.elimsPerLife, 2)],
+    ["Assists / 10", n(s.assists10, 2)],
+    ["Solo kills / 10", n(s.soloKills10 as number | undefined, 2)],
+    ["Damage per life", n(s.damagePerLife as number | undefined)],
+    ["Best damage game", n(s.damageBest as number | undefined)],
+    ["Best elims game", n(s.eliminationsBest as number | undefined)],
+    ["Objective time", s.objectiveTimeMinutes !== undefined ? `${s.objectiveTimeMinutes} min` : "–"],
+    ["Best kill streak", n(s.killStreakBest)],
+    ["Multikills", s.multikills !== undefined ? `${s.multikills} (best ${s.multikillBest})` : "–"],
+    ["Time on fire", s.onFireMinutes !== undefined ? `${s.onFireMinutes} min` : "–"],
+  ];
+  return (
+    <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
+      <dl className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+        {stats.map(([k, v]) => (
+          <Fragment key={k}>
+            <dt className="text-muted">{k}</dt>
+            <dd className="text-right tabular-nums">{v}</dd>
+          </Fragment>
+        ))}
+      </dl>
+      <dl className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+        {Object.entries(s.heroSpecific ?? {}).map(([k, v]) => (
+          <Fragment key={k}>
+            <dt className="text-muted">{k}</dt>
+            <dd className="text-right tabular-nums">{v}</dd>
+          </Fragment>
+        ))}
+      </dl>
+      {row.grade && (
+        <div className="space-y-1.5 text-xs">
+          <div className="text-muted">Compared with your usual numbers for this role</div>
+          {row.grade.parts.map((p) => (
+            <div key={p.label} className="flex items-center gap-2">
+              <span className="w-20 shrink-0">{p.label}</span>
+              <div className="relative h-1.5 flex-1 rounded-full bg-surface-2">
+                <div className={`h-1.5 rounded-full ${p.score >= 1 ? "bg-good" : "bg-bad"}`} style={{ width: `${((p.score - 0.6) / 0.8) * 100}%` }} />
+                <div className="absolute -top-0.5 left-1/2 h-2.5 w-0.5 rounded bg-foreground/60" />
+              </div>
+              <span className="w-28 shrink-0 text-right tabular-nums text-muted">
+                {fmtPart(p.label, p.value)} vs {fmtPart(p.label, p.baseline)}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+const fmtPart = (label: string, v: number) => (label === "Win rate" ? `${v.toFixed(0)}%` : v >= 100 ? Math.round(v).toLocaleString() : v.toFixed(1));
 
 const MODE_LABEL: Record<string, string> = { competitive: "Competitive", quickplay: "Quick Play", arcade: "Arcade", stadium: "Stadium", gameBrowser: "Game Browser" };
 
