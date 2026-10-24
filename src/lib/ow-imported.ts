@@ -34,7 +34,16 @@ export type ImportedSeason = {
   seasonHigh: RoleRanks;
   gamesWon: Record<Role | "open", number>;
   leaderboards: Partial<Record<Metric, Record<string, number>>>;
-  heroDetail: Record<string, Record<string, number | Record<string, string>>>;
+  heroDetail: Record<string, HeroSheet>;
+};
+
+/** A hero's full in-game stat sheet (Statistics tab). Per-10 values are per 10 minutes. */
+export type HeroSheet = Partial<Record<Metric, number>> & {
+  gamesPlayed: number;
+  gamesLost: number;
+  assists10?: number;
+  heroSpecific?: Record<string, string>;
+  [stat: string]: number | Record<string, string> | undefined;
 };
 
 export type ImportedMatch = {
@@ -71,7 +80,7 @@ export function heroLookup(heroes: HeroInfo[]) {
   return (name: string) => byName.get(norm(name));
 }
 
-export type ImportedHeroRow = { name: string; gamesPlayed?: number } & Partial<Record<Metric, number>>;
+export type ImportedHeroRow = { name: string; gamesPlayed?: number; sheet?: HeroSheet; grade?: Grade | null } & Partial<Record<Metric, number>>;
 
 /** One row per hero, joining every top-9 list the season has. */
 export function seasonHeroRows(season: ImportedSeason): ImportedHeroRow[] {
@@ -87,7 +96,41 @@ export function seasonHeroRows(season: ImportedSeason): ImportedHeroRow[] {
     // Games played isn't listed, but wins ÷ win rate gives it back.
     if (row.gamesWon && row.winrate) row.gamesPlayed = Math.round(row.gamesWon / (row.winrate / 100));
   }
+  // A full stat sheet beats the top-9 lists, so its numbers win.
+  for (const [name, sheet] of Object.entries(season.heroDetail)) {
+    const row = rows.get(name) ?? { name };
+    for (const [k, v] of Object.entries(sheet)) if (typeof v === "number") (row as Record<string, unknown>)[k] = v;
+    row.sheet = sheet;
+    rows.set(name, row);
+  }
   return [...rows.values()].sort((a, b) => (b.minutes ?? 0) - (a.minutes ?? 0) || (b.gamesWon ?? 0) - (a.gamesWon ?? 0));
+}
+
+/**
+ * Grades each full hero sheet against your OverFast numbers for that hero's
+ * role, the same way the live hero grades work.
+ */
+export function gradeSheets(rows: ImportedHeroRow[], stats: OwStats | null, heroes: HeroInfo[]): ImportedHeroRow[] {
+  const find = heroLookup(heroes);
+  return rows.map((row) => {
+    const s = row.sheet;
+    const general = stats?.general;
+    if (!s || !general) return row;
+    const role = find(row.name)?.role;
+    const base: StatBlock = (role && stats.roles?.[role]) || general;
+    const line = {
+      winrate: s.winrate ?? 0,
+      games_played: s.gamesPlayed,
+      average: {
+        eliminations: s.eliminations10 ?? NaN,
+        assists: s.assists10 ?? NaN,
+        deaths: s.deaths10 ?? NaN,
+        damage: s.damage10 ?? NaN,
+        healing: s.healing10 ?? NaN,
+      },
+    };
+    return { ...row, grade: grade(line, base) };
+  });
 }
 
 export type GradedMatch = ImportedMatch & { grade: Grade | null };
@@ -132,6 +175,24 @@ export function importedTips(): Tips {
     }
   }
 
+  // Same hero, both seasons, with full sheets: call out big swings.
+  if (current && previous) {
+    for (const [name, now] of Object.entries(current.heroDetail)) {
+      const before = previous.heroDetail[name];
+      if (!before || now.winrate === undefined || before.winrate === undefined || now.gamesPlayed < 4 || before.gamesPlayed < 4) continue;
+      const drop = before.winrate - now.winrate;
+      if (drop >= 20) {
+        avoid.push(
+          `${name} fell from ${before.winrate}% (${before.gamesPlayed} games) last season to ${now.winrate}% (${now.gamesPlayed} games) now, with deaths up from ${before.deaths10} to ${now.deaths10} per 10 min.`,
+        );
+      }
+    }
+    for (const [name, s] of Object.entries(previous.heroDetail)) {
+      if (s.gamesPlayed >= 5 && (s.winrate ?? 100) < 50) {
+        avoid.push(`${name} won ${s.winrate}% over ${s.gamesPlayed} games last season. Keep it for quick play until it improves.`);
+      }
+    }
+  }
   const vendetta = current?.heroDetail.Vendetta;
   if (vendetta && typeof vendetta.deaths10 === "number" && typeof vendetta.elimsPerLife === "number") {
     practice.push(
@@ -162,12 +223,14 @@ export const mergeTips = (a: Tips, b: Tips): Tips => ({
 const fmt = (row: ImportedHeroRow) =>
   [
     row.minutes !== undefined && `${row.minutes} min`,
-    row.gamesPlayed !== undefined && `~${row.gamesPlayed} games`,
+    row.gamesPlayed !== undefined && `${row.sheet ? "" : "~"}${row.gamesPlayed} games`,
     row.winrate !== undefined && `${row.winrate}% win`,
     row.eliminations10 !== undefined && `${row.eliminations10} elims/10`,
     row.deaths10 !== undefined && `${row.deaths10} deaths/10`,
     row.damage10 !== undefined && `${row.damage10} dmg/10`,
     row.healing10 !== undefined && `${row.healing10} heal/10`,
+    row.accuracy !== undefined && `${row.accuracy}% accuracy`,
+    ...Object.entries(row.sheet?.heroSpecific ?? {}).map(([k, v]) => `${k} ${v}`),
   ]
     .filter(Boolean)
     .join(", ");
